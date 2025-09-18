@@ -1,31 +1,52 @@
-<!-- trigger build -->
 <!DOCTYPE html>
 <html lang="en">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>BLACK-HIVE Coming Soon</title>
+    <title>BLACK-HIVE | Tactical Swarm Systems</title>
     <style>
+      html,
+      body {
+        height: 100%;
+      }
+
       body {
         margin: 0;
         min-height: 100vh;
         display: flex;
         align-items: center;
         justify-content: center;
-        background-color: #000;
+        background: url("drone-stadium.jpg") no-repeat center center / cover;
         color: #fff;
         font-family: "Helvetica Neue", Arial, sans-serif;
         text-align: center;
-        letter-spacing: 0.1em;
+        overflow: hidden;
       }
 
-      h1 {
-        font-size: 2rem;
-        text-transform: uppercase;
+      .hero {
+        padding: 0 1.5rem;
+      }
+
+      .hero-title {
+        margin: 0;
+        font-size: clamp(2.5rem, 8vw, 64px);
+        font-weight: 700;
+        letter-spacing: 0.1em;
+        text-shadow: 0 4px 12px rgba(0, 0, 0, 0.6);
+      }
+
+      .hero-subtitle {
+        margin-top: 1rem;
+        font-size: 24px;
+        font-weight: 600;
+        text-shadow: 0 3px 10px rgba(0, 0, 0, 0.6);
       }
     </style>
   </head>
   <body>
-    <h1>BLACK-HIVE Coming Soon</h1>
+    <div class="hero">
+      <h1 class="hero-title">BLACK-HIVE</h1>
+      <p class="hero-subtitle">Tactical Swarm Systems</p>
+    </div>
   </body>
 </html>
