@@ -1,0 +1,136 @@
+:root {
+  color-scheme: light;
+  font-family: "Helvetica Neue", Arial, sans-serif;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background: linear-gradient(to bottom, rgba(0, 0, 0, 0.25), rgba(0, 0, 0, 0.35)),
+    url("drone-stadium.jpg") center / cover no-repeat;
+  color: #0f0f0f;
+}
+
+.hero {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 40px 20px;
+}
+
+.hero-card {
+  background-color: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.4);
+  padding: 40px;
+  max-width: 600px;
+  width: min(100%, 600px);
+  text-align: center;
+}
+
+.hero-card h1 {
+  margin: 0;
+  font-size: 36px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+}
+
+.hero-subtitle {
+  margin: 16px 0 12px;
+  font-size: 20px;
+  font-weight: 600;
+}
+
+.hero-description {
+  margin: 0 0 32px;
+  font-size: 16px;
+  line-height: 1.6;
+  color: #1f1f1f;
+}
+
+.cta-group {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.cta-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 14px 20px;
+  border-radius: 10px;
+  font-size: 14px;
+  font-weight: 600;
+  text-decoration: none;
+  transition: background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease;
+  cursor: pointer;
+  outline: none;
+}
+
+.cta-button--primary {
+  background-color: #f0b429;
+  color: #111111;
+  border: 2px solid transparent;
+}
+
+.cta-button--primary:hover,
+.cta-button--primary:focus {
+  background-color: #d89f21;
+}
+
+.cta-button--secondary {
+  background-color: transparent;
+  color: #111111;
+  border: 2px solid #111111;
+}
+
+.cta-button--secondary:hover,
+.cta-button--secondary:focus {
+  border-color: #0a0a0a;
+  color: #0a0a0a;
+}
+
+.cta-button:focus-visible {
+  outline: 2px solid #000000;
+  outline-offset: 2px;
+}
+
+.page-footer {
+  padding: 16px;
+  text-align: center;
+  font-size: 12px;
+  color: rgba(255, 255, 255, 0.85);
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.5);
+}
+
+@media (max-width: 480px) {
+  .hero {
+    padding: 24px 16px;
+  }
+
+  .hero-card {
+    padding: 24px;
+  }
+
+  .hero-card h1 {
+    font-size: 28px;
+  }
+
+  .cta-group {
+    flex-direction: column;
+  }
+
+  .cta-button {
+    width: 100%;
+  }
+}
