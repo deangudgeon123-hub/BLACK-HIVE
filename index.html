@@ -4,49 +4,37 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>BLACK-HIVE | Tactical Swarm Systems</title>
-    <style>
-      html,
-      body {
-        height: 100%;
-      }
-
-      body {
-        margin: 0;
-        min-height: 100vh;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        background: url("drone-stadium.jpg") no-repeat center center / cover;
-        color: #fff;
-        font-family: "Helvetica Neue", Arial, sans-serif;
-        text-align: center;
-        overflow: hidden;
-      }
-
-      .hero {
-        padding: 0 1.5rem;
-      }
-
-      .hero-title {
-        margin: 0;
-        font-size: clamp(2.5rem, 8vw, 64px);
-        font-weight: 700;
-        letter-spacing: 0.1em;
-        text-shadow: 0 4px 12px rgba(0, 0, 0, 0.6);
-      }
-
-      .hero-subtitle {
-        margin-top: 1rem;
-        font-size: 24px;
-        font-weight: 600;
-        text-shadow: 0 3px 10px rgba(0, 0, 0, 0.6);
-      }
-    </style>
+    <link rel="stylesheet" href="style.css" />
   </head>
   <body>
-    <div class="hero">
-      <h1 class="hero-title">BLACK-HIVE</h1>
-      <p class="hero-subtitle">Tactical Swarm Systems</p>
-    </div>
+    <main class="hero" role="main">
+      <section class="hero-card" aria-labelledby="hero-title" aria-describedby="hero-subtitle hero-description">
+        <h1 id="hero-title">BLACK-HIVE</h1>
+        <p id="hero-subtitle" class="hero-subtitle">Tactical Swarm Systems</p>
+        <p id="hero-description" class="hero-description">
+          Precision-coordinated drone intelligence engineered for mission-ready performance in every arena.
+        </p>
+        <div class="cta-group" role="group" aria-label="Primary actions">
+          <a
+            class="cta-button cta-button--primary"
+            href="mailto:ops@black-hive.io"
+            aria-label="Join the BLACK-HIVE waitlist via email"
+          >
+            Join Waitlist
+          </a>
+          <a
+            class="cta-button cta-button--secondary"
+            href="/demo"
+            aria-label="Watch the BLACK-HIVE demo"
+          >
+            Watch Demo
+          </a>
+        </div>
+      </section>
+    </main>
+    <footer class="page-footer">© <span id="current-year"></span> BLACK-HIVE</footer>
+    <script>
+      document.getElementById("current-year").textContent = new Date().getFullYear();
+    </script>
   </body>
 </html>
