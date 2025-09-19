@@ -53,21 +53,45 @@
         const btn = document.querySelector('.nav__toggle');
         const panel = document.getElementById('navPanel');
         if(!btn || !panel) return;
-        function setOpen(open){
-          btn.setAttribute('aria-expanded', String(open));
-          if(open){ panel.hidden = false; requestAnimationFrame(()=>panel.setAttribute('data-open','true')); }
-          else{
-            panel.removeAttribute('data-open');
-            panel.addEventListener('transitionend',()=>{ panel.hidden = true; }, {once:true});
-          }
+
+        function placePanel(){
+          const r = btn.getBoundingClientRect();
+          // fixed so it’s not clipped by hero overflow
+          panel.style.position = 'fixed';
+          panel.style.top = (r.bottom + 8) + 'px';
+          // align the panel’s right edge with the button’s right edge
+          panel.style.left = 'auto';
+          panel.style.right = Math.max(12, window.innerWidth - (r.right)) + 'px';
+          panel.style.zIndex = '9999';
         }
+
+        function openPanel(){
+          panel.hidden = false;
+          placePanel();
+          // let CSS handle fade-in
+          requestAnimationFrame(()=> panel.setAttribute('data-open','true'));
+          btn.setAttribute('aria-expanded','true');
+        }
+        function closePanel(){
+          panel.removeAttribute('data-open');
+          panel.addEventListener('transitionend', ()=>{
+            panel.hidden = true;
+            panel.removeAttribute('style');
+          }, {once:true});
+          btn.setAttribute('aria-expanded','false');
+        }
+
         let open = false;
-        btn.addEventListener('click', ()=>{ open=!open; setOpen(open); });
+        btn.addEventListener('click', ()=>{
+          open ? closePanel() : openPanel();
+          open = !open;
+        });
+        window.addEventListener('resize', ()=>{ if(open){ placePanel(); } });
         document.addEventListener('click', (e)=>{
           if(!open) return;
-          if(!panel.contains(e.target) && e.target !== btn){ open=false; setOpen(false); }
+          if(!panel.contains(e.target) && e.target !== btn){ open = false; closePanel(); }
         });
-        document.addEventListener('keydown', (e)=>{ if(e.key==='Escape' && open){ open=false; setOpen(false); }});
+        document.addEventListener('keydown', (e)=>{ if(e.key==='Escape' && open){ open=false; closePanel(); }});
       })();
     </script>
   </body>
