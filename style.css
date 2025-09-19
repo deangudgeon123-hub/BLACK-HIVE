@@ -21,7 +21,7 @@ main {
 }
 
 .hero {
-  position: relative;
+  position: relative; /* keep existing as-is */
   min-height: 100vh;
 }
 
@@ -39,13 +39,13 @@ main {
 }
 
 .hero__brand img {
-  height: 28px;
+  height: 34px;
   display: block;
 }
 
 @media (min-width: 900px) {
   .hero__brand img {
-    height: 34px;
+    height: 38px;
   }
 }
 
