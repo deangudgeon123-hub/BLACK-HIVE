@@ -15,12 +15,30 @@
           <img src="assets/IMG_1753.png" alt="BLACK-HIVE logo" />
           <span class="brand__word">BLACK<span class="brand__dash">-</span>HIVE</span>
         </a>
+        <nav class="hero__nav" aria-label="Site">
+          <button class="nav__toggle" aria-expanded="false" aria-controls="navPanel">
+            MENU ▾
+          </button>
+          <div class="nav__panel" id="navPanel" hidden>
+            <ul class="nav__list">
+              <li><a href="#solution" class="nav__link">Solution</a></li>
+              <li><a href="#market" class="nav__link">Market</a></li>
+              <li><a href="#budget" class="nav__link">Budget</a></li>
+              <li><a href="#founder" class="nav__link">Founder</a></li>
+              <li class="nav__divider" aria-hidden="true"></li>
+              <li><a href="panel.html" class="nav__link">SWARM PANEL</a></li>
+              <li><a href="assets/BLACK-HIVE_OnePager_2025.pdf" target="_blank" rel="noopener" class="nav__link nav__link--highlight">Download One-Pager</a></li>
+              <li><a href="mailto:contact@blackhive.ai" class="nav__link">Contact</a></li>
+            </ul>
+          </div>
+        </nav>
         <div class="hero__banner" role="region" aria-label="Primary Call to Action">
           <div class="banner__row">
-            <p class="banner__title">Mission-Ready Swarm Intelligence</p>
+            <p class="banner__title">BLACK-HIVE: Tactical Swarm Systems</p>
+            <p class="banner__desc">Exploring next-generation swarm coordination for security, events, and critical response.</p>
             <div class="actions">
-              <a class="btn btn--primary" href="mailto:ops@black-hive.io">Join Waitlist</a>
-              <a class="btn btn--outline" href="#">Watch Demo</a>
+              <a href="assets/BLACK-HIVE_OnePager_2025.pdf" class="btn btn--primary" target="_blank" rel="noopener">Download One-Pager</a>
+              <a href="mailto:contact@blackhive.ai" class="btn btn--outline">Contact Us</a>
             </div>
           </div>
         </div>
@@ -29,6 +47,28 @@
     <footer class="page-footer">© <span id="current-year"></span> BLACK-HIVE</footer>
     <script>
       document.getElementById("current-year").textContent = new Date().getFullYear();
+    </script>
+    <script>
+      (function(){
+        const btn = document.querySelector('.nav__toggle');
+        const panel = document.getElementById('navPanel');
+        if(!btn || !panel) return;
+        function setOpen(open){
+          btn.setAttribute('aria-expanded', String(open));
+          if(open){ panel.hidden = false; requestAnimationFrame(()=>panel.setAttribute('data-open','true')); }
+          else{
+            panel.removeAttribute('data-open');
+            panel.addEventListener('transitionend',()=>{ panel.hidden = true; }, {once:true});
+          }
+        }
+        let open = false;
+        btn.addEventListener('click', ()=>{ open=!open; setOpen(open); });
+        document.addEventListener('click', (e)=>{
+          if(!open) return;
+          if(!panel.contains(e.target) && e.target !== btn){ open=false; setOpen(false); }
+        });
+        document.addEventListener('keydown', (e)=>{ if(e.key==='Escape' && open){ open=false; setOpen(false); }});
+      })();
     </script>
   </body>
 </html>
