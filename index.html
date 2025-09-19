@@ -94,5 +94,16 @@
         document.addEventListener('keydown', (e)=>{ if(e.key==='Escape' && open){ open=false; closePanel(); }});
       })();
     </script>
+    <script>
+      (function(){
+        function setVH(){
+          const h = window.innerHeight * 0.01;
+          document.documentElement.style.setProperty('--vh', h + 'px');
+        }
+        setVH();
+        window.addEventListener('resize', setVH);
+        window.addEventListener('orientationchange', setVH);
+      })();
+    </script>
   </body>
 </html>
