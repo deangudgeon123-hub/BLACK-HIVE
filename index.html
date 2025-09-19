@@ -16,7 +16,7 @@
           <span class="brand__word">BLACK<span class="brand__dash">-</span>HIVE</span>
         </a>
         <nav class="hero__nav" aria-label="Site">
-          <button class="nav__toggle" aria-expanded="false" aria-controls="navPanel">
+          <button class="nav__menu-btn" aria-expanded="false" aria-controls="navPanel">
             MENU ▾
           </button>
           <div class="nav__panel" id="navPanel" hidden>
@@ -47,7 +47,7 @@
     </script>
     <script>
       (function(){
-        const btn = document.querySelector('.nav__toggle');
+        const btn = document.querySelector('.nav__menu-btn');
         const panel = document.getElementById('navPanel');
         if(!btn || !panel) return;
 

@@ -55,34 +55,30 @@ main {
 }
 
 .brand {
-  display: flex;
+  display: inline-flex;
   align-items: center;
-  gap: 10px;
-  color: #e8edf2;
-  text-decoration: none;
+  gap: 8px;
+  padding: 0 16px;
+  height: 44px;
+  border-radius: 8px;
+  background: #d1d3d4;
 }
 
 .brand img {
-  height: 32px;
-  display: block;
+  height: 22px;
 }
 
-@media (min-width: 900px) {
-  .brand img {
-    height: 36px;
-  }
-}
-
-.brand:hover img {
-  filter: drop-shadow(0 0 6px rgba(240,180,41,.25));
+.brand span {
+  font: 700 14px / 1 Inter, system-ui, sans-serif;
+  letter-spacing: 1px;
+  color: #111;
 }
 
 .brand__text {
-  font-family: "Inter", system-ui, sans-serif;
-  font-weight: 800;
-  letter-spacing: 1.5px;
+  font: 700 14px / 1 Inter, system-ui, sans-serif;
+  letter-spacing: 1px;
   text-transform: uppercase;
-  color: #e8edf2;
+  color: #111;
 }
 
 .hero__brand:hover {
@@ -374,11 +370,15 @@ section.hero.hero--framed {
 }
 
 .btn--primary {
-  background: var(--amber);
-  color: #111;
+  background: #cc1e2c;
+  border: 1px solid #cc1e2c;
+  color: #fff;
+  font-weight: 700;
 }
 
 .btn--primary:hover {
+  background: #b31a26;
+  border-color: #b31a26;
   transform: translateY(-1px);
   box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
 }
@@ -422,16 +422,28 @@ section.hero.hero--framed {
   top: max(12px, env(safe-area-inset-top,0) + 12px);
   right:max(12px, env(safe-area-inset-right,0) + 12px);
 }
-.nav__toggle{
-  appearance:none; cursor:pointer;
-  background:rgba(0,0,0,.28);
-  color:var(--ink); border:1px solid rgba(255,255,255,.12);
-  padding:10px 14px; border-radius:12px;
-  font:700 12px/1 Inter, system-ui, sans-serif; letter-spacing:.08em;
-  backdrop-filter: blur(6px) saturate(1.1);
-  transition:transform .15s ease, box-shadow .15s ease;
+.nav__menu-btn,
+.nav__toggle {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 16px;
+  height: 44px;
+  border-radius: 8px;
+  background: #d1d3d4;
+  font: 700 14px / 1 Inter, system-ui, sans-serif;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: #111;
+  cursor: pointer;
+  transition: background 0.2s;
+  border: none;
 }
-.nav__toggle:hover{ transform:translateY(-1px); box-shadow:0 8px 20px rgba(0,0,0,.25) }
+
+.nav__menu-btn:hover,
+.nav__toggle:hover {
+  background: #c5c7c9;
+}
 
 .nav__panel{
   position:absolute; right:0; margin-top:8px; min-width:220px;
