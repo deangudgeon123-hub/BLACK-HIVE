@@ -453,8 +453,11 @@ section.hero.hero--framed {
   transition: background-color .15s ease, transform .15s ease;
 }
 .nav__link:hover{ background:rgba(255,255,255,.06); transform:translateX(2px); }
-.nav__link--highlight{ color:#111; background:var(--amber); }
-.nav__link--highlight:hover{ filter:brightness(.96) }
+.nav__link--highlight{
+  background: #cc1e2c;
+  color: #fff;
+}
+.nav__link--highlight:hover{ filter: brightness(.95); }
 .nav__divider{ height:1px; margin:6px 10px; background:rgba(255,255,255,.12); border-radius:1px }
 
 /* Mobile: make panel full-width chip under button */
@@ -471,3 +474,17 @@ section.hero.hero--framed {
     transition: none !important;
   }
 }
+
+/* Slim hero badge used on subpages */
+.hero__subbadge{
+  position:absolute; left:0; right:0; bottom:0;
+  background:#f7f8fa; color:#0b0d0e;
+  padding:14px 18px; border-top:1px solid rgba(0,0,0,.10); border-radius:0;
+}
+.hero__subbadge .title{ margin:0; font:800 18px/1.2 Inter, system-ui, sans-serif }
+
+/* Generic content block */
+.content{ max-width:1100px; margin:28px auto; padding:0 16px; }
+.content h1{ font:800 28px/1.2 Inter, system-ui, sans-serif; margin:0 0 10px }
+.content p, .content li{ font:400 16px/1.6 Inter, system-ui, sans-serif; color:#d9e1ea }
+.content a{ color:#e8edf2; text-decoration:underline; text-underline-offset:2px }
