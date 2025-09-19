@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="240" height="36" viewBox="0 0 240 36" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="BLACK-HIVE">
+  <title>BLACK-HIVE</title>
+  <g transform="translate(4,2)">
+    <polygon points="16,0 32,9.25 32,27.75 16,37 0,27.75 0,9.25"
+             fill="#14171a" stroke="#cc1e2c" stroke-width="2"/>
+    <g opacity="0.6" stroke="#cc1e2c" stroke-width="1">
+      <polygon points="16,6 24,10.62 24,19.88 16,24.5 8,19.88 8,10.62" fill="#14171a"/>
+      <polygon points="24,10.62 32,15.25 32,24.5 24,29.12 24,19.88" fill="#14171a" opacity="0.6"/>
+      <polygon points="8,10.62 8,19.88 8,19.88 0,24.5 0,15.25 8,10.62" fill="#14171a" opacity="0.6"/>
+    </g>
+    <g id="prop" transform="translate(16,18)">
+      <rect x="-10" y="-2" width="20" height="4" rx="2" fill="#f0b429" opacity="0.95"/>
+      <rect x="-2" y="-10" width="4" height="20" rx="2" fill="#f0b429" opacity="0.95"/>
+    </g>
+  </g>
+  <g transform="translate(56,9)">
+    <text x="0" y="16"
+      font-family="Inter, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif"
+      font-size="18" font-weight="800" letter-spacing="1.5" fill="#e8edf2">BLACK-HIVE</text>
+    <rect x="0" y="22" width="110" height="2" fill="#cc1e2c" opacity="0.85"/>
+  </g>
+</svg>

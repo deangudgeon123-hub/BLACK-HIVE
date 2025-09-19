@@ -25,6 +25,34 @@ main {
   min-height: 100vh;
 }
 
+.hero__brand {
+  position: absolute;
+  top: max(12px, env(safe-area-inset-top, 0px) + 12px);
+  left: max(12px, env(safe-area-inset-left, 0px) + 12px);
+  display: inline-block;
+  z-index: 5;
+  padding: 6px 10px;
+  border-radius: 10px;
+  background: rgba(0, 0, 0, 0.25);
+  backdrop-filter: blur(4px) saturate(1.1);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+}
+
+.hero__brand img {
+  height: 28px;
+  display: block;
+}
+
+@media (min-width: 900px) {
+  .hero__brand img {
+    height: 34px;
+  }
+}
+
+.hero__brand:hover {
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.35);
+}
+
 .hero__bg {
   position: absolute;
   inset: 0;
