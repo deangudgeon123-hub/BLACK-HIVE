@@ -299,6 +299,13 @@ main {
   font: 800 20px / 1.25 Inter, system-ui, sans-serif;
 }
 
+.banner__desc {
+  margin: 6px 0 0;
+  font: 400 14px / 1.4 Inter, system-ui, sans-serif;
+  color: #333;
+  flex-basis: 100%;
+}
+
 .actions {
   display: flex;
   gap: 10px;
@@ -350,4 +357,60 @@ main {
   .btn {
     width: 100%;
   }
+}
+
+:root{
+  --ink:#e8edf2; --line:rgba(255,255,255,.18);
+  --accent:#cc1e2c; --amber:#f0b429;
+  --panel:rgba(10,12,14,.82);
+}
+
+/* Top-right overlay nav */
+.hero__nav{
+  position:absolute; z-index:5;
+  top: max(12px, env(safe-area-inset-top,0) + 12px);
+  right:max(12px, env(safe-area-inset-right,0) + 12px);
+}
+.nav__toggle{
+  appearance:none; cursor:pointer;
+  background:rgba(0,0,0,.28);
+  color:var(--ink); border:1px solid rgba(255,255,255,.12);
+  padding:8px 12px; border-radius:12px;
+  font:700 12px/1 Inter, system-ui, sans-serif; letter-spacing:.08em;
+  backdrop-filter: blur(6px) saturate(1.1);
+  transition:transform .15s ease, box-shadow .15s ease;
+}
+.nav__toggle:hover{ transform:translateY(-1px); box-shadow:0 8px 20px rgba(0,0,0,.25) }
+
+.nav__panel{
+  position:absolute; right:0; margin-top:8px; min-width:220px;
+  background:var(--panel);
+  border:1px solid rgba(255,255,255,.12);
+  border-radius:14px; padding:10px;
+  box-shadow: 0 20px 50px rgba(0,0,0,.35);
+  backdrop-filter: blur(8px) saturate(1.1);
+  /* animation container */
+  opacity:0; transform: translateY(-6px) scale(.98);
+  transition: opacity .18s ease, transform .18s ease;
+}
+.nav__panel[data-open="true"]{ opacity:1; transform: translateY(0) scale(1); }
+.nav__list{ list-style:none; margin:0; padding:6px 0; }
+.nav__link{
+  display:block; padding:10px 12px; border-radius:10px;
+  color:var(--ink); text-decoration:none; font:600 14px/1 Inter, system-ui, sans-serif;
+  transition: background-color .15s ease, transform .15s ease;
+}
+.nav__link:hover{ background:rgba(255,255,255,.06); transform:translateX(2px); }
+.nav__link--highlight{ color:#111; background:var(--amber); }
+.nav__link--highlight:hover{ filter:brightness(.96) }
+.nav__divider{ height:1px; margin:6px 10px; background:rgba(255,255,255,.12); border-radius:1px }
+
+/* Mobile: make panel full-width chip under button */
+@media (max-width:520px){
+  .nav__panel{ min-width: calc(100vw - 24px); left:12px; right:12px }
+}
+
+/* Reduced motion */
+@media (prefers-reduced-motion: reduce){
+  .nav__toggle, .nav__panel, .nav__link{ transition:none !important }
 }
