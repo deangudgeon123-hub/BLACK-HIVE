@@ -1,8 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<svg viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="BH">
-  <polygon points="32,4 58,18 58,46 32,60 6,46 6,18" fill="#cc1e2c"/>
-  <g transform="translate(32,32)">
-    <rect x="-12" y="-2.5" width="24" height="5" rx="2.5" fill="#f0b429"/>
-    <rect x="-2.5" y="-12" width="5" height="24" rx="2.5" fill="#f0b429"/>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="BH emblem">
+  <circle cx="32" cy="32" r="28" fill="none" stroke="#ff4d73" stroke-width="6"/>
+  <g fill="#142233">
+    <path d="M32 20l-8 3v5l8 3 8-3v-5z"/>
+    <path d="M24 28l-15-4 3-3 14 4zM40 28l15-4-3-3-14 4z"/>
+    <circle cx="32" cy="40" r="10"/>
   </g>
+  <circle cx="32" cy="40" r="7" fill="none" stroke="#ff4d73" stroke-width="4"/>
+  <circle cx="32" cy="40" r="3" fill="#ff4d73"/>
 </svg>
