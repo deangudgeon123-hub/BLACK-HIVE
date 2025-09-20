@@ -8,6 +8,39 @@
     <link rel="stylesheet" href="style.css" />
   </head>
   <body>
+    <header class="site-bar">
+      <details class="brand-menu" role="navigation">
+        <summary class="brand-pill" aria-label="Open site menu">
+          <img src="assets/IMG_1753.png" alt="BLACK-HIVE" class="brand-logo">
+          <span class="brand-text">Research</span>
+          <span class="caret">▾</span>
+        </summary>
+        <nav class="brand-dropdown" aria-label="Main">
+          <a href="overview.html">Overview</a>
+          <a href="swarm/">Swarm Panel</a>
+          <a href="research.html">Research</a>
+          <a href="contact.html">Contact</a>
+          <a href="javascript:history.back()">Back</a>
+        </nav>
+      </details>
+    </header>
+    <script>
+      (function(){
+        const menu = document.querySelector('.brand-menu');
+        if(!menu) return;
+
+        // Close when clicking outside
+        document.addEventListener('click', (e)=>{
+          if(!menu.open) return;
+          if(!menu.contains(e.target)) menu.open = false;
+        });
+
+        // Close on Escape
+        document.addEventListener('keydown', (e)=>{
+          if(e.key === 'Escape') menu.open = false;
+        });
+      })();
+    </script>
     <main role="main">
       <section class="hero hero--framed hero--plain">
         <div class="hero__bg" aria-hidden="true"></div>
@@ -15,20 +48,6 @@
           <img src="assets/IMG_1753.png" alt="BLACK-HIVE logo" />
           <span class="brand__word">BLACK<span class="brand__dash">-</span>HIVE</span>
         </a>
-        <nav class="hero__nav" aria-label="Site">
-          <button class="nav__toggle" aria-expanded="false" aria-controls="navPanel">
-            MENU ▾
-          </button>
-          <div class="nav__panel" id="navPanel" hidden>
-            <ul class="nav__list">
-              <li><a href="overview.html" class="nav__link">Overview</a></li>
-              <li><a href="founder.html" class="nav__link">Founder</a></li>
-              <li><a class="nav__link nav__link--cta" href="swarm/" data-nav="swarm">SWARM PANEL</a></li>
-              <li><a href="research.html" class="nav__link">Research</a></li>
-              <li><a href="contact.html" class="nav__link">Contact</a></li>
-            </ul>
-          </div>
-        </nav>
         <div class="hero__subbadge"><p class="title">Research</p></div>
       </section>
     </main>
@@ -42,52 +61,6 @@
     <footer class="page-footer">© <span id="current-year"></span> BLACK-HIVE</footer>
     <script>
       document.getElementById("current-year").textContent = new Date().getFullYear();
-    </script>
-    <script>
-      (function(){
-        const btn = document.querySelector('.nav__toggle');
-        const panel = document.getElementById('navPanel');
-        if(!btn || !panel) return;
-
-        function placePanel(){
-          const r = btn.getBoundingClientRect();
-          // fixed so it’s not clipped by hero overflow
-          panel.style.position = 'fixed';
-          panel.style.top = (r.bottom + 8) + 'px';
-          // align the panel’s right edge with the button’s right edge
-          panel.style.left = 'auto';
-          panel.style.right = Math.max(12, window.innerWidth - (r.right)) + 'px';
-          panel.style.zIndex = '9999';
-        }
-
-        function openPanel(){
-          panel.hidden = false;
-          placePanel();
-          // let CSS handle fade-in
-          requestAnimationFrame(()=> panel.setAttribute('data-open','true'));
-          btn.setAttribute('aria-expanded','true');
-        }
-        function closePanel(){
-          panel.removeAttribute('data-open');
-          panel.addEventListener('transitionend', ()=>{
-            panel.hidden = true;
-            panel.removeAttribute('style');
-          }, {once:true});
-          btn.setAttribute('aria-expanded','false');
-        }
-
-        let open = false;
-        btn.addEventListener('click', ()=>{
-          open ? closePanel() : openPanel();
-          open = !open;
-        });
-        window.addEventListener('resize', ()=>{ if(open){ placePanel(); } });
-        document.addEventListener('click', (e)=>{
-          if(!open) return;
-          if(!panel.contains(e.target) && e.target !== btn){ open = false; closePanel(); }
-        });
-        document.addEventListener('keydown', (e)=>{ if(e.key==='Escape' && open){ open=false; closePanel(); }});
-      })();
     </script>
     <script>
       (function(){
