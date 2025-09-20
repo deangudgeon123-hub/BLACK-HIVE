@@ -80,9 +80,58 @@
   button,.row,.kv{transition:filter .15s,background-color .15s,transform .15s}
   :focus-visible{outline:2px solid rgba(255,255,255,.25);outline-offset:2px;border-radius:6px}
   @media (prefers-reduced-motion: reduce){*{animation:none!important;transition:none!important}}
+
+  .site-bar{
+    max-width:1200px; margin:10px auto 0; padding:0 10px;
+    display:flex; align-items:center; justify-content:space-between; gap:10px;
+  }
+
+  .brand-pill, .menu-pill > summary{
+    display:flex; align-items:center; gap:10px;
+    background:#d0d3d7; color:#111; padding:10px 14px;
+    border-radius:14px; font-weight:800; letter-spacing:.4px;
+    border:1px solid rgba(0,0,0,.08); cursor:pointer; user-select:none;
+    list-style:none;
+  }
+  .brand-pill:hover, .menu-pill > summary:hover{ filter:brightness(0.96); }
+
+  .brand-logo{ height:22px; width:auto; }
+  .brand-text{ font-weight:900; text-transform:uppercase; }
+
+  .menu-pill{ position:relative; }
+  .menu-pill[open] > summary{ outline:1px dashed #bbb; }
+  .menu-pill > summary::-webkit-details-marker{ display:none; }
+  .menu-pill > nav{
+    position:absolute; right:0; top:calc(100% + 8px);
+    background:#0f151c; color:#e8f1fb; border:1px solid #1b2430;
+    border-radius:12px; min-width:210px; padding:8px; z-index:20;
+    box-shadow:0 10px 26px rgba(0,0,0,.35);
+  }
+  .menu-pill > nav a{
+    display:block; padding:8px 10px; border-radius:8px; text-decoration:none; color:#e8f1fb;
+  }
+  .menu-pill > nav a:hover{ background:#0c1116; }
 </style>
 </head>
 <body>
+  <header class="site-bar">
+    <a class="brand-pill" href="../index.html">
+      <img src="../assets/IMG_1753.png" alt="BLACK-HIVE" class="brand-logo">
+      <span class="brand-text">SWARM PANEL</span>
+    </a>
+
+    <details class="menu-pill">
+      <summary>MENU ▾</summary>
+      <nav>
+        <a href="../index.html#overview">Overview</a>
+        <a href="../index.html#swarm">Swarm Panel</a>
+        <a href="../index.html#research">Research</a>
+        <a href="../index.html#contact">Contact</a>
+        <a href="javascript:history.back()">Back</a>
+      </nav>
+    </details>
+  </header>
+
   <div class="wrap">
     <!-- LEFT -->
     <div class="card">
@@ -104,6 +153,7 @@
         <div class="controls" style="margin-bottom:10px">
           <button id="launchButton" class="btn btn--primary" aria-label="Launch Fleet">Launch Fleet (L)</button>
           <button id="rtbButton" class="btn" aria-label="Return to Base">Return to Base (R)</button>
+          <button id="resetButton" class="btn" aria-label="Reset Panel">Reset (X)</button>
         </div>
 
         <div class="map-wrap">
@@ -174,7 +224,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const el={
     map:$('mapCanvas'), fleetV:$('fleetValue'), activeV:$('activeValue'), timeV:$('timeValue'), incV:$('incidentsValue'),
     list:$('fleetList'), feed:$('feedContainer'), status:$('statusPill'),
-    launch:$('launchButton'), rtb:$('rtbButton'), scenario:$('scenarioSelect'),
+    launch:$('launchButton'), rtb:$('rtbButton'), resetButton:$('resetButton'), scenario:$('scenarioSelect'),
     cmdIn:$('cmdInput'), cmdSend:$('cmdSend'), exportBtn:$('exportBtn')
   };
   const ctx=el.map.getContext('2d');
@@ -403,6 +453,30 @@ document.addEventListener('DOMContentLoaded', () => {
     render(); updateUI();
   }
 
+  const resetPanel = () => {
+    app.run = false;
+    app.time = 0;
+    app.inc = 0;
+    app.last = 0;
+    app.pendingIncidentAt = null;
+    app.assistResolver = null;
+    app.highlight = null;
+    app.incidentId = null;
+    app.helpers = [];
+    app.scenario = el.scenario.value;
+
+    el.feed.innerHTML = '';
+
+    app.drones = Array.from({length:CFG.COUNT},(_,i)=>createDrone(i));
+
+    el.status.textContent = 'Grounded';
+    el.status.className = 'status neutral';
+
+    el.cmdIn.value = '';
+    updateUI();
+    render();
+  };
+
   /* ===== UI ===== */
   const batteryBar=pct=>`<div class="bat"><div class="f" style="inset:0 ${100-clamp(pct,0,100)}% 0 0"></div></div>`;
   function updateUI(){
@@ -466,6 +540,10 @@ document.addEventListener('DOMContentLoaded', () => {
   function bind(){
     window.addEventListener('resize', resize, {passive:true});
 
+    if(el.resetButton){
+      el.resetButton.addEventListener('click', resetPanel);
+    }
+
     el.launch.addEventListener('click', ()=>{
       app.run=true; el.status.textContent='Live'; el.status.className='status ok';
       startCleanSweep();
@@ -495,6 +573,7 @@ document.addEventListener('DOMContentLoaded', () => {
       const k=e.key.toLowerCase();
       if(k==='l') el.launch.click();
       if(k==='r') el.rtb.click();
+      if(k==='x') resetPanel();
       if(k==='/'){ e.preventDefault(); el.cmdIn.focus(); }
     });
 
