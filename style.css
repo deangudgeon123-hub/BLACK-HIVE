@@ -36,44 +36,6 @@ main {
   flex: 1;
 }
 
-/* Top bar container */
-.site-bar{
-  max-width:1200px; margin:10px auto 0; padding:0 10px;
-  display:flex; align-items:center; justify-content:flex-start;
-}
-
-/* The single pill that shows logo + text and opens the dropdown */
-.brand-pill{
-  display:flex; align-items:center; gap:10px;
-  background:#d0d3d7; color:#111; padding:10px 14px;
-  border:1px solid rgba(0,0,0,.08); border-radius:14px;
-  font-weight:800; letter-spacing:.4px; user-select:none; cursor:pointer;
-}
-.brand-pill:hover{ filter:brightness(0.96); }
-.brand-logo{ height:22px; width:auto; }
-.brand-text{ font-weight:900; text-transform:uppercase; }
-.caret{ margin-left:6px; opacity:.7 }
-
-/* Dropdown */
-.brand-menu{ position:relative }
-.brand-menu[open] .brand-pill{ outline:1px dashed #bbb; outline-offset:2px }
-.brand-dropdown{
-  position:absolute; left:0; top:calc(100% + 8px); z-index:20;
-  background:#0f151c; color:#e8f1fb;
-  border:1px solid #1b2430; border-radius:12px; min-width:230px; padding:8px;
-  box-shadow:0 10px 26px rgba(0,0,0,.35);
-}
-.brand-dropdown a{
-  display:block; padding:8px 10px; border-radius:8px; color:#e8f1fb; text-decoration:none;
-}
-.brand-dropdown a:hover{ background:#0c1116 }
-
-/* Small screens */
-@media (max-width:600px){
-  .brand-text{ font-size:12px }
-  .brand-logo{ height:20px }
-}
-
 .hero {
   position: relative; /* keep existing as-is */
   min-height: 100vh;
