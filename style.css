@@ -88,8 +88,11 @@ main {
 .hero__bg {
   position: absolute;
   inset: 0;
-  background: url("drone-stadium.jpg") center / cover no-repeat;
   z-index: 0;
+}
+
+.home .hero__bg {
+  background: url("drone-stadium.jpg") center / cover no-repeat;
 }
 
 .hero::after {
@@ -465,11 +468,15 @@ section.hero.hero--framed {
   transition: background-color .15s ease, transform .15s ease;
 }
 .nav__link:hover{ background:rgba(255,255,255,.06); transform:translateX(2px); }
-.nav__link--highlight{
+.nav__link--highlight,
+.nav__link--cta{
   background: #cc1e2c;
   color: #fff;
+  font-weight: 700;
+  box-shadow: 0 12px 30px rgba(204, 30, 44, 0.35);
 }
-.nav__link--highlight:hover{ filter: brightness(.95); }
+.nav__link--highlight:hover,
+.nav__link--cta:hover{ filter: brightness(.95); }
 .nav__divider{ height:1px; margin:6px 10px; background:rgba(255,255,255,.12); border-radius:1px }
 
 /* Mobile: make panel full-width chip under button */
