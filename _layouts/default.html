@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{{ page.title | default: site.title }}</title>
+    <link rel="icon" href="{{ '/assets/favicon.svg' | relative_url }}" type="image/svg+xml" />
+    <link rel="stylesheet" href="{{ '/style.css' | relative_url }}" />
+    {% if page.head_extra %}{{ page.head_extra | safe }}{% endif %}
+  </head>
+  <body class="{% if page.body_class %}{{ page.body_class }}{% endif %}{% if page.hero %} has-hero{% endif %}">
+    <header class="site-header" role="banner">
+      <div class="site-header__inner">
+        <details class="brand-menu" role="navigation">
+          <summary class="brand-pill" aria-label="Open site menu">
+            <img src="{{ '/assets/IMG_1753.png' | relative_url }}" alt="{{ site.title }}" class="brand-logo" />
+            <span class="brand-text">{{ page.nav_label | default: page.title | default: site.title }}</span>
+            <span class="caret">▾</span>
+          </summary>
+          <nav class="brand-dropdown" aria-label="Main">
+            <a href="{{ '/overview.html' | relative_url }}">Overview</a>
+            <a href="{{ '/swarm/' | relative_url }}">Swarm Panel Sim</a>
+            <a href="{{ '/research.html' | relative_url }}">Research</a>
+            <a href="{{ '/contact.html' | relative_url }}">Contact</a>
+            <a href="javascript:history.back()">Back</a>
+          </nav>
+        </details>
+      </div>
+    </header>
+
+    <main id="main-content" class="site-main" role="main">
+      {% if page.hero %}
+        <section class="hero hero--framed" aria-labelledby="hero-title">
+          <div class="hero__bg" aria-hidden="true"></div>
+          <div class="hero__banner" role="region" aria-labelledby="hero-title">
+            <div class="banner__row">
+              <h1 id="hero-title" class="banner__title">BLACK-HIVE: Tactical Swarm Systems</h1>
+              <p class="banner__desc">Exploring next-generation swarm coordination for security, events, and critical response.</p>
+              <div class="actions">
+                <a class="btn btn--primary" href="mailto:contact@blackhive.ai?subject=BLACK-HIVE%20Waitlist&body=Hi%20BLACK-HIVE%20team%2C%0A%0AI'd%20like%20to%20join%20the%20waitlist.%20Please%20keep%20me%20posted.%0A%0AThanks!">Join Waitlist</a>
+                <a class="btn btn--outline" href="mailto:contact@blackhive.ai">Contact Us</a>
+              </div>
+            </div>
+          </div>
+        </section>
+      {% endif %}
+
+      {% assign trimmed = content | strip %}
+      {% if trimmed != '' %}
+        <div class="page-frame">
+          {{ content }}
+        </div>
+      {% endif %}
+    </main>
+
+    <footer class="page-footer">© <span id="current-year"></span> {{ site.title }}</footer>
+
+    <script>
+      (function(){
+        const menu = document.querySelector('.brand-menu');
+        if(!menu) return;
+
+        document.addEventListener('click', (event) => {
+          if(!menu.open) return;
+          if(!menu.contains(event.target)) menu.open = false;
+        });
+
+        document.addEventListener('keydown', (event) => {
+          if(event.key === 'Escape') menu.open = false;
+        });
+      })();
+    </script>
+    <script>
+      (function(){
+        const yearTarget = document.getElementById('current-year');
+        if(yearTarget){
+          yearTarget.textContent = new Date().getFullYear();
+        }
+      })();
+    </script>
+    <script>
+      (function(){
+        function setVH(){
+          const h = window.innerHeight * 0.01;
+          document.documentElement.style.setProperty('--vh', h + 'px');
+        }
+        setVH();
+        window.addEventListener('resize', setVH);
+        window.addEventListener('orientationchange', setVH);
+      })();
+    </script>
+  </body>
+</html>

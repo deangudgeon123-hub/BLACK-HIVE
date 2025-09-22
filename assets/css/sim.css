@@ -1,0 +1,346 @@
+body.swarm-sim {
+  --frame-width: min(1200px, calc(100% - 24px));
+}
+
+body.swarm-sim .page-frame {
+  margin-top: clamp(20px, 5vw, 48px);
+  padding-bottom: clamp(24px, 4vw, 40px);
+}
+
+body.swarm-sim .page-section--sim {
+  padding: 0;
+  background: transparent;
+  border: 0;
+  box-shadow: none;
+}
+
+.sim-app {
+  --red: #cc1e2c;
+  --ink: #e8f1fb;
+  --muted: #a7b4c4;
+  --bg: #0b0f14;
+  --panel: #101821;
+  --line: #1b2633;
+  --ok: #74dba0;
+  --bad: #ff6b6b;
+  --chip: #0f151c;
+  --chip2: #0c1116;
+  color: var(--ink);
+  font: 13.5px/1.5 "Inter", system-ui, "Segoe UI", Roboto, Arial, sans-serif;
+}
+
+.sim-app .wrap {
+  display: grid;
+  grid-template-columns: 2fr 1.25fr;
+  gap: 16px;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 12px;
+}
+
+@media (max-width: 1000px) {
+  .sim-app .wrap {
+    grid-template-columns: 1fr;
+  }
+}
+
+.sim-app .card {
+  background: rgba(16, 24, 33, 0.72);
+  backdrop-filter: blur(8px) saturate(120%);
+  -webkit-backdrop-filter: blur(8px) saturate(120%);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: 14px;
+  box-shadow: 0 18px 50px rgba(0, 0, 0, 0.45);
+  display: flex;
+  flex-direction: column;
+}
+
+.sim-app .card > .hd {
+  padding: 12px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.sim-app .card > .bd {
+  padding: 12px;
+}
+
+.sim-app h1,
+.sim-app h2 {
+  margin: 0;
+  letter-spacing: 1.6px;
+  font-weight: 900;
+  text-transform: uppercase;
+}
+
+.sim-app h1 {
+  font-size: 15px;
+  color: #e9eef6;
+  text-shadow: 0 1px 0 rgba(0, 0, 0, 0.8);
+}
+
+.sim-app h1 b {
+  color: var(--red);
+}
+
+.sim-app h2 {
+  font-size: 15px;
+  color: #e9eef6;
+}
+
+.sim-app h2 b {
+  color: var(--red);
+}
+
+.sim-app .sub {
+  color: var(--muted);
+  font-size: 12px;
+  margin: 0;
+}
+
+.sim-app .controls {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  align-items: center;
+}
+
+.sim-app .btn {
+  background: rgba(255, 255, 255, 0.05);
+  color: var(--ink);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  height: 36px;
+  padding: 7px 12px;
+  border-radius: 12px;
+  font: 600 14px/1 "Inter", system-ui, sans-serif;
+  cursor: pointer;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.25);
+  transition: transform 0.15s, filter 0.15s, background 0.15s;
+}
+
+.sim-app .btn:hover {
+  filter: brightness(1.06);
+}
+
+.sim-app .btn.btn--primary {
+  background: linear-gradient(180deg, #e03a46, #b7232f);
+  border-color: #92202a;
+  box-shadow: 0 10px 30px rgba(204, 30, 44, 0.35), inset 0 1px 0 rgba(255, 255, 255, 0.12);
+}
+
+.sim-app .select,
+.sim-app .input {
+  background: rgba(255, 255, 255, 0.05);
+  color: var(--ink);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  height: 36px;
+  padding: 7px 10px;
+  border-radius: 10px;
+  font: inherit;
+}
+
+.sim-app .status {
+  padding: 6px 10px;
+  border-radius: 999px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: rgba(255, 255, 255, 0.05);
+  font-weight: 800;
+  font-size: 12px;
+}
+
+.sim-app .status.ok {
+  color: var(--ok);
+}
+
+.sim-app .status.neutral {
+  color: var(--muted);
+}
+
+.sim-app .map-wrap {
+  position: relative;
+}
+
+.sim-app #mapCanvas {
+  width: 100%;
+  aspect-ratio: 16 / 10;
+  display: block;
+  border-radius: 12px;
+  background: #0c1218;
+}
+
+.sim-app .legend {
+  position: absolute;
+  left: 10px;
+  top: 10px;
+  display: flex;
+  gap: 8px;
+  z-index: 5;
+  background: rgba(12, 18, 24, 0.6);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  padding: 6px 8px;
+  border-radius: 12px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.35);
+  backdrop-filter: blur(4px);
+  font-size: 12px;
+  color: var(--muted);
+  pointer-events: none;
+}
+
+.sim-app .dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  display: inline-block;
+  margin-right: 4px;
+}
+
+.sim-app .c-patrol {
+  background: var(--red);
+}
+
+.sim-app .c-rtb {
+  background: var(--bad);
+}
+
+.sim-app .c-assist {
+  background: #f05c7a;
+}
+
+.sim-app .c-dist {
+  background: #c0cad5;
+}
+
+.sim-app .hud {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 10px;
+}
+
+.sim-app .kv {
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: 12px;
+  padding: 6px 8px;
+  display: flex;
+  gap: 6px;
+  align-items: center;
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.03);
+}
+
+.sim-app .kv .k {
+  color: var(--muted);
+  font-size: 12px;
+}
+
+.sim-app .kv .v {
+  font-weight: 800;
+}
+
+.sim-app .grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 10px;
+  max-height: 360px;
+  overflow: auto;
+}
+
+.sim-app .row {
+  display: grid;
+  grid-template-columns: 68px 1fr 85px 76px 56px;
+  gap: 8px;
+  align-items: center;
+  padding: 8px;
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  font-size: 13px;
+  transition: background 0.15s, outline 0.15s;
+}
+
+.sim-app .row .id {
+  font-weight: 800;
+  letter-spacing: 0.3px;
+}
+
+.sim-app .row .mode {
+  color: var(--muted);
+}
+
+.sim-app .row:hover {
+  outline: 1px dashed rgba(255, 255, 255, 0.25);
+  outline-offset: 2px;
+}
+
+.sim-app .bat {
+  height: 7px;
+  background: #0a1216;
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: 12px;
+  position: relative;
+  overflow: hidden;
+}
+
+.sim-app .bat > .f {
+  position: absolute;
+  inset: 0 100% 0 0;
+  background: linear-gradient(90deg, #4ad7a4, #9ff2dd);
+  border-radius: 12px;
+}
+
+.sim-app .feed {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  max-height: 360px;
+  overflow: auto;
+}
+
+.sim-app .alert {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-left: 4px solid var(--red);
+  padding: 8px 10px;
+  border-radius: 12px;
+  box-shadow: 0 10px 28px rgba(0, 0, 0, 0.35);
+}
+
+.sim-app .alert.bad {
+  border-left-color: var(--bad);
+}
+
+.sim-app .alert.ok {
+  border-left-color: var(--ok);
+}
+
+.sim-app .alert.assist {
+  border-left-color: #f05c7a;
+}
+
+.sim-app .ts {
+  color: var(--muted);
+  font-size: 11px;
+}
+
+.sim-app button,
+.sim-app .row,
+.sim-app .kv {
+  transition: filter 0.15s, background-color 0.15s, transform 0.15s;
+}
+
+.sim-app :focus-visible {
+  outline: 2px solid rgba(255, 255, 255, 0.25);
+  outline-offset: 2px;
+  border-radius: 6px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .sim-app * {
+    animation: none !important;
+    transition: none !important;
+  }
+}

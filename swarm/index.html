@@ -1,232 +1,73 @@
-<!doctype html>
-<html lang="en">
-<head>
-<meta charset="utf-8"/>
-<meta name="viewport" content="width=device-width,initial-scale=1"/>
-<title>SWARM PANEL</title>
-<link rel="icon" href="../assets/favicon.svg" type="image/svg+xml">
-<link rel="stylesheet" href="../style.css" />
-<style>
-  :root{
-    /* Brand */
-    --red:#cc1e2c; --ink:#e8f1fb; --muted:#a7b4c4;
-
-    /* UI */
-    --bg:#0b0f14; --panel:#101821; --line:#1b2633;
-
-    /* Status */
-    --ok:#74dba0; --bad:#ff6b6b;
-
-    /* Surfaces */
-    --chip:#0f151c; --chip2:#0c1116;
-  }
-  *{box-sizing:border-box}
-  html,body.swarm-sim{margin:0;background:var(--bg);color:var(--ink);font:13.5px/1.5 Inter,system-ui,Segoe UI,Roboto,Arial,sans-serif}
-  body.swarm-sim{display:block;min-height:100vh}
-
-  /* ===== App chrome ===== */
-  .wrap{display:grid;grid-template-columns:2fr 1.25fr;gap:16px;max-width:1200px;margin:18px auto;padding:0 12px}
-  @media (max-width:1000px){.wrap{grid-template-columns:1fr}}
-  .card{
-    background: rgba(16,24,33,.72);
-    backdrop-filter: blur(8px) saturate(120%);
-    border:1px solid rgba(255,255,255,.06);
-    border-radius:14px; box-shadow:0 18px 50px rgba(0,0,0,.45)
-  }
-  .card>.hd{padding:12px;border-bottom:1px solid rgba(255,255,255,.06);display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
-  .card>.bd{padding:12px}
-
-  h1,h2{margin:0;letter-spacing:1.6px;font-weight:900;text-transform:uppercase}
-  h1{font-size:15px;color:#e9eef6;text-shadow:0 1px 0 rgba(0,0,0,.8)}
-  h1 b{color:var(--red)}
-  h2{font-size:15px;color:#e9eef6}
-  h2 b{color:var(--red)}
-  .sub{color:var(--muted);font-size:12px;margin:0}
-
-  .controls{display:flex;flex-wrap:wrap;gap:10px;align-items:center}
-  .btn{background:rgba(255,255,255,.05);color:var(--ink);border:1px solid rgba(255,255,255,.08);height:36px;padding:7px 12px;border-radius:12px;font:600 14px/1 Inter;cursor:pointer;box-shadow:0 6px 18px rgba(0,0,0,.25);transition:transform .15s,filter .15s,background .15s}
-  .btn:hover{filter:brightness(1.06)}
-  .btn--primary{background:linear-gradient(180deg,#e03a46,#b7232f);border-color:#92202a;box-shadow:0 10px 30px rgba(204,30,44,.35), inset 0 1px 0 rgba(255,255,255,.12)}
-  .select, .input{background:rgba(255,255,255,.05);color:var(--ink);border:1px solid rgba(255,255,255,.08);height:36px;padding:7px 10px;border-radius:10px;font:inherit}
-  .status{padding:6px 10px;border-radius:999px;border:1px solid rgba(255,255,255,.08);background:rgba(255,255,255,.05);font-weight:800;font-size:12px}
-  .status.ok{color:var(--ok)} .status.neutral{color:var(--muted)}
-
-  /* Map */
-  .map-wrap{position:relative}
-  #mapCanvas{width:100%;aspect-ratio:16/10;display:block;border-radius:12px;background:#0c1218}
-  .legend{
-    position:absolute;left:10px;top:10px;display:flex;gap:8px;z-index:5;
-    background:rgba(12,18,24,.6);border:1px solid rgba(255,255,255,.06);padding:6px 8px;border-radius:12px;
-    box-shadow:0 8px 24px rgba(0,0,0,.35);backdrop-filter: blur(4px);font-size:12px;color:var(--muted);pointer-events:none
-  }
-  .dot{width:8px;height:8px;border-radius:50%;display:inline-block;margin-right:4px}
-  .c-patrol{background:var(--red)} .c-rtb{background:var(--bad)} .c-assist{background:#f05c7a} .c-dist{background:#c0cad5}
-
-  /* HUD */
-  .hud{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}
-  .kv{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.06);border-radius:12px;padding:6px 8px;display:flex;gap:6px;align-items:center;box-shadow:inset 0 0 0 1px rgba(255,255,255,.03)}
-  .kv .k{color:var(--muted);font-size:12px} .kv .v{font-weight:800}
-
-  /* Fleet & Alerts */
-  .grid{display:grid;grid-template-columns:1fr;gap:10px;max-height:360px;overflow:auto}
-  .row{display:grid;grid-template-columns:68px 1fr 85px 76px 56px;gap:8px;align-items:center;padding:8px;border-radius:12px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.06);font-size:13px;transition:background .15s,outline .15s}
-  .row .id{font-weight:800;letter-spacing:.3px}
-  .row .mode{color:var(--muted)}
-  .row:hover{outline:1px dashed rgba(255,255,255,.25);outline-offset:2px}
-  .bat{height:7px;background:#0a1216;border:1px solid rgba(255,255,255,.06);border-radius:12px;position:relative;overflow:hidden}
-  .bat>.f{position:absolute;inset:0 100% 0 0;background:linear-gradient(90deg,#4ad7a4,#9ff2dd);border-radius:12px}
-
-  .feed{display:flex;flex-direction:column;gap:10px;max-height:360px;overflow:auto}
-  .alert{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.08);border-left:4px solid var(--red);padding:8px 10px;border-radius:12px;box-shadow:0 10px 28px rgba(0,0,0,.35)}
-  .ts{color:var(--muted);font-size:11px}
-
-  button,.row,.kv{transition:filter .15s,background-color .15s,transform .15s}
-  :focus-visible{outline:2px solid rgba(255,255,255,.25);outline-offset:2px;border-radius:6px}
-  @media (prefers-reduced-motion: reduce){*{animation:none!important;transition:none!important}}
-
-  /* Top bar container */
-  .site-bar{
-    max-width:1200px; margin:10px auto 0; padding:0 10px;
-    display:flex; align-items:center; justify-content:flex-start;
-  }
-
-  /* The single pill that shows logo + text and opens the dropdown */
-  .brand-pill{
-    display:flex; align-items:center; gap:10px;
-    background:#d0d3d7; color:#111; padding:10px 14px;
-    border:1px solid rgba(0,0,0,.08); border-radius:14px;
-    font-weight:800; letter-spacing:.4px; user-select:none; cursor:pointer;
-  }
-  .brand-pill:hover{ filter:brightness(0.96); }
-  .brand-logo{ height:22px; width:auto; }
-  .brand-text{ font-weight:900; text-transform:uppercase; }
-  .caret{ margin-left:6px; opacity:.7 }
-
-  /* Dropdown */
-  .brand-menu{ position:relative }
-  .brand-menu[open] .brand-pill{ outline:1px dashed #bbb; outline-offset:2px }
-  .brand-dropdown{
-    position:absolute; left:0; top:calc(100% + 8px); z-index:20;
-    background:#0f151c; color:#e8f1fb;
-    border:1px solid #1b2430; border-radius:12px; min-width:230px; padding:8px;
-    box-shadow:0 10px 26px rgba(0,0,0,.35);
-  }
-  .brand-dropdown a{
-    display:block; padding:8px 10px; border-radius:8px; color:#e8f1fb; text-decoration:none;
-  }
-  .brand-dropdown a:hover{ background:#0c1116 }
-
-  /* Small screens */
-  @media (max-width:600px){
-    .brand-text{ font-size:12px }
-    .brand-logo{ height:20px }
-  }
-</style>
-</head>
-<body class="swarm-sim">
-  <main role="main">
-    <section class="hero hero--framed hero--plain hero--panel-sim">
-      <div class="hero__bg" aria-hidden="true"></div>
-      <header class="site-bar">
-        <details class="brand-menu" role="navigation">
-          <summary class="brand-pill" aria-label="Open site menu">
-            <img src="../assets/IMG_1753.png" alt="BLACK-HIVE" class="brand-logo">
-            <span class="brand-text">Swarm Panel</span>
-            <span class="caret">▾</span>
-          </summary>
-          <nav class="brand-dropdown" aria-label="Main">
-            <a href="../overview.html">Overview</a>
-            <a href="./index.html">Swarm Panel Sim</a>
-            <a href="../research.html">Research</a>
-            <a href="../contact.html">Contact</a>
-            <a href="javascript:history.back()">Back</a>
-          </nav>
-        </details>
-      </header>
-      <div class="hero__subbadge"><p class="title">SWARM PANEL</p></div>
-    </section>
-  </main>
-  <script>
-    (function(){
-      const menu = document.querySelector('.brand-menu');
-      if(!menu) return;
-
-      // Close when clicking outside
-      document.addEventListener('click', (e)=>{
-        if(!menu.open) return;
-        if(!menu.contains(e.target)) menu.open = false;
-      });
-
-      // Close on Escape
-      document.addEventListener('keydown', (e)=>{
-        if(e.key === 'Escape') menu.open = false;
-      });
-    })();
-  </script>
-
-  <main class="sim-app">
+---
+layout: default
+title: Swarm Panel Sim | BLACK-HIVE
+nav_label: Swarm Panel
+body_class: swarm-sim
+head_extra: |
+  <link rel="stylesheet" href="{{ '/assets/css/sim.css' | relative_url }}">
+---
+<section class="page-section page-section--sim">
+  <div class="sim-app" role="region" aria-label="Swarm panel simulation">
     <div class="wrap">
-    <!-- LEFT -->
-    <div class="card">
-      <div class="hd">
-        <div class="controls" style="gap:12px">
-          <h1>SWARM <b>PANEL</b></h1>
-          <select id="scenarioSelect" class="select" aria-label="Scenario">
-            <option value="perimeter" selected>Scenario: Perimeter Sweep</option>
-            <option value="incident">Scenario: Crowd Incident (assist)</option>
-          </select>
-        </div>
-        <div class="controls">
-          <input id="cmdInput" class="input" placeholder="Type a command… (/ to focus)" style="width:240px"/>
-          <button id="cmdSend" class="btn">Send</button>
-          <span id="statusPill" class="status neutral">Grounded</span>
-        </div>
-      </div>
-      <div class="bd">
-        <div class="controls" style="margin-bottom:10px">
-          <button id="launchButton" class="btn btn--primary" aria-label="Launch Fleet">Launch Fleet (L)</button>
-          <button id="rtbButton" class="btn" aria-label="Return to Base">Return to Base (R)</button>
-          <button id="resetButton" class="btn" aria-label="Reset Panel">Reset (X)</button>
-        </div>
-
-        <div class="map-wrap">
-          <div class="legend" aria-hidden="true">
-            <span><span class="dot c-patrol"></span>PATROL</span>
-            <span><span class="dot c-rtb"></span>RTB</span>
-            <span><span class="dot c-assist"></span>ASSIST</span>
-            <span><span class="dot c-dist"></span>DISTRESS</span>
+      <div class="card">
+        <div class="hd">
+          <div class="controls" style="gap:12px">
+            <h1>SWARM <b>PANEL</b></h1>
+            <select id="scenarioSelect" class="select" aria-label="Scenario">
+              <option value="perimeter" selected>Scenario: Perimeter Sweep</option>
+              <option value="incident">Scenario: Crowd Incident (assist)</option>
+            </select>
           </div>
-          <canvas id="mapCanvas" role="img" aria-label="Swarm area map showing drones and alerts"></canvas>
+          <div class="controls">
+            <input id="cmdInput" class="input" placeholder="Type a command… (/ to focus)" style="width:240px" />
+            <button id="cmdSend" class="btn">Send</button>
+            <span id="statusPill" class="status neutral">Grounded</span>
+          </div>
         </div>
+        <div class="bd">
+          <div class="controls" style="margin-bottom:10px">
+            <button id="launchButton" class="btn btn--primary" aria-label="Launch Fleet">Launch Fleet (L)</button>
+            <button id="rtbButton" class="btn" aria-label="Return to Base">Return to Base (R)</button>
+            <button id="resetButton" class="btn" aria-label="Reset Panel">Reset (X)</button>
+          </div>
 
-        <div class="hud">
-          <div class="kv"><span class="k">Operator</span><span class="v">1</span></div>
-          <div class="kv"><span class="k">Fleet</span><span class="v" id="fleetValue">10</span></div>
-          <div class="kv"><span class="k">Active</span><span class="v" id="activeValue">0</span></div>
-          <div class="kv"><span class="k">Time</span><span class="v" id="timeValue">0.0s</span></div>
-          <div class="kv"><span class="k">Incidents</span><span class="v" id="incidentsValue">0</span></div>
+          <div class="map-wrap">
+            <div class="legend" aria-hidden="true">
+              <span><span class="dot c-patrol"></span>PATROL</span>
+              <span><span class="dot c-rtb"></span>RTB</span>
+              <span><span class="dot c-assist"></span>ASSIST</span>
+              <span><span class="dot c-dist"></span>DISTRESS</span>
+            </div>
+            <canvas id="mapCanvas" role="img" aria-label="Swarm area map showing drones and alerts"></canvas>
+          </div>
+
+          <div class="hud">
+            <div class="kv"><span class="k">Operator</span><span class="v">1</span></div>
+            <div class="kv"><span class="k">Fleet</span><span class="v" id="fleetValue">10</span></div>
+            <div class="kv"><span class="k">Active</span><span class="v" id="activeValue">0</span></div>
+            <div class="kv"><span class="k">Time</span><span class="v" id="timeValue">0.0s</span></div>
+            <div class="kv"><span class="k">Incidents</span><span class="v" id="incidentsValue">0</span></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="hd">
+          <div>
+            <h2><b>Fleet</b> & Alerts</h2>
+            <p class="sub">Live status • Modes: GROUND / PATROL / ASSIST / DISTRESS / RTB / CHARGE</p>
+          </div>
+          <div class="controls"><button id="exportBtn" class="btn" aria-label="Export Alerts">Export Alerts</button></div>
+        </div>
+        <div class="bd">
+          <div class="grid" id="fleetList"></div>
+          <h2 style="margin:14px 0 8px"><b>Alerts</b></h2>
+          <div class="feed" id="feedContainer" role="log" aria-live="polite"></div>
         </div>
       </div>
     </div>
-
-    <!-- RIGHT -->
-    <div class="card">
-      <div class="hd">
-        <div>
-          <h2><b>Fleet</b> & Alerts</h2>
-          <p class="sub">Live status • Modes: GROUND / PATROL / ASSIST / DISTRESS / RTB / CHARGE</p>
-        </div>
-        <div class="controls"><button id="exportBtn" class="btn" aria-label="Export Alerts">Export Alerts</button></div>
-      </div>
-      <div class="bd">
-        <div class="grid" id="fleetList"></div>
-        <h2 style="margin:14px 0 8px"><b>Alerts</b></h2>
-        <div class="feed" id="feedContainer" role="log" aria-live="polite"></div>
-      </div>
-    </div>
-    </div>
-  </main>
-
+  </div>
+</section>
 <script>
 document.addEventListener('DOMContentLoaded', () => {
   /* ===== Helpers ===== */
@@ -370,7 +211,7 @@ document.addEventListener('DOMContentLoaded', () => {
       list.forEach((d,i)=>{
         const target=baseSpin+i*step;
         const diff=((target-d.th+Math.PI)%(Math.PI*2))-Math.PI;
-        d.th+=diff*Math.min(1,1.8*dt);     // gentle slotting
+        d.th+=diff*Math.min(1,1.8*dt);
         d.x=d.ring*Math.cos(d.th);
         d.y=d.ring*Math.sin(d.th);
       });
@@ -389,7 +230,7 @@ document.addEventListener('DOMContentLoaded', () => {
       d.mode='RTB'; logAlert('ok', `RTB • ${d.id} low battery (${d.battery.toFixed(0)}%)`);
     }
 
-    if(d.mode==='PATROL'){ d.th += d.omega*dt*CFG.SIM.speed; d.alt=d.altBase; /* x,y via formation */ }
+    if(d.mode==='PATROL'){ d.th += d.omega*dt*CFG.SIM.speed; d.alt=d.altBase; }
 
     else if(d.mode==='ASSIST'){
       const trg = app.drones.find(x=>x.id===d.assistTargetId);
@@ -398,254 +239,328 @@ document.addEventListener('DOMContentLoaded', () => {
         const dx=trg.x-d.x, dy=trg.y-d.y, dist=Math.hypot(dx,dy), want=d.assistRadius||10;
         if(dist>want*1.15){
           const k=1 - Math.pow(1-.28, dt); d.x+=dx*k; d.y+=dy*k;
-        }else{
-          d.assistAngle=(d.assistAngle??Math.random()*Math.PI*2) + (1.0 + 0.1*(d.idx%2))*dt;
-          d.x = trg.x + want*Math.cos(d.assistAngle + (d.assistSlot||0));
-          d.y = trg.y + want*Math.sin(d.assistAngle + (d.assistSlot||0));
+        }else if(dist<want*0.85){
+          const k=1 - Math.pow(1-.35, dt); d.x-=dx*k; d.y-=dy*k;
         }
-        d.alt = trg.altBase;
+        if(trg.mode==='DISTRESS'){ d.mode='DISTRESS'; d.distressTarget=trg.id; }
+      }
+    }
+
+    else if(d.mode==='DISTRESS'){
+      const trg=app.drones.find(x=>x.id===d.distressTarget);
+      if(!trg || trg.mode!=='DISTRESS'){
+        d.mode='ASSIST';
+        d.assistTargetId=app.incidentId;
+        d.assistRadius=12;
+      }else{
+        const dx=trg.x-d.x, dy=trg.y-d.y, k=1 - Math.pow(1-.18, dt);
+        d.x+=dx*k; d.y+=dy*k;
       }
     }
 
     else if(d.mode==='RTB'){
-      const k=lerpDt(CFG.SIM.rtbLerp,dt);
-      d.x += (CFG.BASE.x - d.x)*k;
-      d.y += (CFG.BASE.y - d.y)*k;
-      d.alt = Math.max(0, d.alt - CFG.SIM.altRate*dt);
-      if(Math.hypot(d.x-CFG.BASE.x,d.y-CFG.BASE.y)<2) d.mode='CHARGE';
+      const dx=CFG.BASE.x-d.x, dy=CFG.BASE.y-d.y;
+      const dist=Math.hypot(dx,dy);
+      if(dist<6){
+        d.mode='GROUND'; d.battery = Math.min(100, d.battery + CFG.SIM.recharge*dt*60);
+        if(d.battery>=99){ d.mode='CHARGE'; d.chargeTime=1.2; }
+      }else{
+        const k=1 - Math.pow(1-CFG.SIM.rtbLerp, dt);
+        d.x+=dx*k; d.y+=dy*k;
+      }
     }
 
     else if(d.mode==='CHARGE'){
-      d.battery=Math.min(100, d.battery + CFG.SIM.recharge*dt);
-      d.alt=0;
-      if(d.battery>=95){ d.mode='PATROL'; d.th+=Math.PI/5; }
+      d.chargeTime -= dt;
+      if(d.chargeTime<=0){
+        d.mode='GROUND';
+        d.battery = 100;
+      }
     }
 
-    else if(d.mode==='DISTRESS'){
-      // slight jitter to visually read as "not nominal"
-      d.x+=Math.sin((app.time+d.idx)*2)*0.05;
-      d.y+=Math.cos((app.time+d.idx)*2)*0.05;
+    if(d.mode==='GROUND' && app.run){
+      d.launchCooldown = (d.launchCooldown||0) + dt;
+      if(d.launchCooldown>=0.6){
+        d.mode='PATROL';
+        d.launchCooldown=0;
+        const th=((Math.random()*360)|0)*(Math.PI/180);
+        d.x=CFG.BASE.x + Math.cos(th)*12;
+        d.y=CFG.BASE.y + Math.sin(th)*12;
+      }
     }
-
-    d.blink += dt;
   }
 
-  /* ===== Scenarios ===== */
-  function triggerIncidentNow(){
-    const victim = app.drones[3]; // deterministic for demo
-    if(!victim) return;
-
-    victim.mode='DISTRESS';
-    app.incidentId=victim.id;
-    victim.ring=35;               // toward centre
-    victim.th += 0.15;
-
-    // choose helpers
-    const helpers = [app.drones[1], app.drones[6], app.drones[8]].slice(0,3);
-    helpers.forEach((h,j)=>{
-      h.mode='ASSIST';
-      h.assistTargetId=victim.id;
-      h.assistSlot=j*(2*Math.PI/3);
-      h.assistRadius = 10 + 2*j;
-    });
-    app.helpers = helpers;
-
-    logAlert('bad', `Incident • ${victim.id}. Assigning ${helpers.map(h=>h.id).join(', ')} to assist.`);
-    ping('distress');
-
-    // auto resolve ~14s later
-    const resolveAt = app.time + 14;
-    app.assistResolver = ()=>{ if(app.time>=resolveAt){
-      victim.mode='PATROL';
-      helpers.forEach(h=>{ if(h.mode==='ASSIST') h.mode='PATROL'; });
-      logAlert('ok','Assist complete; resuming patrol.');
-      ping('resolve');
-      app.assistResolver=null;
-    }};
-  }
-
-  function setScenario(name){
-    app.scenario = name;
-    app.incidentId=null; app.helpers.length=0; app.assistResolver=null; app.pendingIncidentAt=null;
-
-    // Reform to a clean sweep first (so both scenarios start the same)
-    startCleanSweep();
-
-    if(!app.run){
-      // Not running: just schedule if incident selected; will fire after launch
-      if(name==='incident'){ app.pendingIncidentAt = (app.time||0) + 6.0; }
-      render(); updateUI();
-      return;
-    }
-
-    if(name==='perimeter'){
-      logAlert('ok','Scenario set: Perimeter Sweep.');
-    }else{ // incident
-      app.pendingIncidentAt = app.time + 6.0; // breathing room before triggering
-      logAlert('ok','Scenario set: Crowd Incident — monitoring…');
-    }
-    render(); updateUI();
-  }
-
-  const resetPanel = () => {
-    app.run = false;
-    app.time = 0;
-    app.inc = 0;
-    app.last = 0;
-    app.pendingIncidentAt = null;
-    app.assistResolver = null;
-    app.highlight = null;
-    app.incidentId = null;
-    app.helpers = [];
-    app.scenario = el.scenario.value;
-
-    el.feed.innerHTML = '';
-
-    app.drones = Array.from({length:CFG.COUNT},(_,i)=>createDrone(i));
-
-    el.status.textContent = 'Grounded';
-    el.status.className = 'status neutral';
-
-    el.cmdIn.value = '';
-    updateUI();
-    render();
-  };
-
-  /* ===== UI ===== */
-  const batteryBar=pct=>`<div class="bat"><div class="f" style="inset:0 ${100-clamp(pct,0,100)}% 0 0"></div></div>`;
-  function updateUI(){
-    el.fleetV.textContent=app.drones.length;
-    el.activeV.textContent=app.drones.filter(d=>!['GROUND','CHARGE'].includes(d.mode)).length;
-    el.timeV.textContent=app.time.toFixed(1)+'s';
-    el.incV.textContent=app.inc;
-
-    el.list.innerHTML = app.drones.map(d=>{
-      const pct=Math.round(clamp(d.battery,0,100));
-      return `<div class="row" data-id="${d.id}">
-        <div class="id">${d.id}</div>
-        <div class="mode">${d.mode}</div>
-        ${batteryBar(pct)}
-        <div class="link">${d.link}</div>
-        <div class="alt">${Math.round(d.alt)} m</div>
-      </div>`;
-    }).join('');
-
-    [...el.list.querySelectorAll('.row')].forEach(r=>{
-      const id=r.dataset.id;
-      r.addEventListener('mouseenter',()=>{app.highlight=id; render();},{passive:true});
-      r.addEventListener('mouseleave',()=>{app.highlight=null; render();},{passive:true});
-      r.addEventListener('focus',()=>{app.highlight=id; render();});
-      r.addEventListener('blur',()=>{app.highlight=null; render();});
-    });
-  }
-
-  function logAlert(kind,msg){
-    app.inc++;
-    const box=document.createElement('div'); box.className='alert';
-    box.innerHTML=`<div class="ts">${new Date().toLocaleTimeString()}</div><div>${msg}</div>`;
-    el.feed.prepend(box);
-    while(el.feed.children.length>30) el.feed.removeChild(el.feed.lastChild);
-    if(kind==='bad') ping('distress'); else ping('assist');
-  }
-
-  /* ===== Loop ===== */
-  function tick(dt){
-    if(!app.run) return;
-    app.time += dt;
-
-    // delayed incident trigger
-    if(app.scenario==='incident' && app.pendingIncidentAt!==null && app.time >= app.pendingIncidentAt){
-      app.pendingIncidentAt=null;
-      triggerIncidentNow();
-    }
-
+  function updateFleet(dt){
     app.drones.forEach(d=>updateDrone(d,dt));
     applyRingFormation(dt);
-    if(typeof app.assistResolver==='function') app.assistResolver();
-    updateUI(); render();
-  }
-  function loop(ts){
-    if(!app.last) app.last=ts;
-    const dt=Math.min(0.05,(ts-app.last)/1000); app.last=ts;
-    tick(dt); requestAnimationFrame(loop);
-  }
-
-  /* ===== Events ===== */
-  function bind(){
-    window.addEventListener('resize', resize, {passive:true});
-
-    if(el.resetButton){
-      el.resetButton.addEventListener('click', resetPanel);
-    }
-
-    el.launch.addEventListener('click', ()=>{
-      app.run=true; el.status.textContent='Live'; el.status.className='status ok';
-      startCleanSweep();
-      // If user already picked "incident", schedule the trigger
-      if(app.scenario==='incident'){ app.pendingIncidentAt = app.time + 6.0; }
-      updateUI(); render();
-    });
-
-    el.rtb.addEventListener('click', ()=>{
-      app.run=true; el.status.textContent='Live'; el.status.className='status ok';
-      app.drones.forEach(d=>{ if(d.mode!=='GROUND') d.mode='RTB'; });
-      logAlert('ok','Return to Base issued to all active units.');
-    });
-
-    el.scenario.addEventListener('change', e=>{
-      app.scenario=e.target.value;
-      setScenario(app.scenario);
-    });
-
-    el.cmdSend.addEventListener('click', ()=>{
-      const v=el.cmdIn.value.trim(); if(!v) return;
-      logAlert('ok','CMD › '+v); el.cmdIn.value='';
-    });
-    el.cmdIn.addEventListener('keydown', e=>{ if(e.key==='Enter') el.cmdSend.click(); });
-
-    window.addEventListener('keydown', e=>{
-      const k=e.key.toLowerCase();
-      if(k==='l') el.launch.click();
-      if(k==='r') el.rtb.click();
-      if(k==='x') resetPanel();
-      if(k==='/'){ e.preventDefault(); el.cmdIn.focus(); }
-    });
-
-    el.exportBtn.addEventListener('click', ()=>{
-      const logs=[...el.feed.children].map(n=>({t:n.querySelector('.ts')?.textContent||'', msg:n.lastElementChild?.textContent||''}));
-      const blob=new Blob([JSON.stringify(logs,null,2)],{type:'application/json'});
-      const a=Object.assign(document.createElement('a'),{href:URL.createObjectURL(blob),download:'blackhive-alerts.json'});
-      document.body.appendChild(a); a.click(); URL.revokeObjectURL(a.href); a.remove();
+    app.drones.forEach(d=>{
+      if(d.mode==='PATROL'){
+        d.x=d.ring*Math.cos(d.th);
+        d.y=d.ring*Math.sin(d.th);
+      }
     });
   }
 
-  /* ===== Init ===== */
+  function updateHUD(){
+    const active=app.drones.filter(d=>d.mode!=='GROUND' && d.mode!=='CHARGE').length;
+    el.fleetV.textContent = String(app.drones.length);
+    el.activeV.textContent = String(active);
+    el.timeV.textContent = app.time.toFixed(1)+'s';
+    el.incV.textContent = String(app.inc);
+  }
+
+  /* ===== Logging ===== */
+  const feed=[];
+  function logAlert(kind,msg){
+    const ts = new Date();
+    const stamp = ts.toLocaleTimeString([], {hour:'2-digit', minute:'2-digit', second:'2-digit'});
+    feed.unshift({kind,msg,stamp});
+    if(feed.length>80) feed.pop();
+    renderFeed();
+    if(kind==='bad' || kind==='assist') ping(kind==='bad'?'distress':'assist');
+    if(kind==='ok') ping('resolve');
+  }
+
+  function renderFeed(){
+    el.feed.innerHTML = feed.map(item=>
+      `<div class="alert ${item.kind}"><div class="ts">${item.stamp}</div><div>${item.msg}</div></div>`
+    ).join('');
+  }
+
+  /* ===== Fleet UI ===== */
+  function renderFleet(){
+    el.list.innerHTML = app.drones.map(d=>{
+      const pct=Math.round(d.battery);
+      const width=Math.max(0, Math.min(100, pct));
+      const blink = d.blink>0 ? ' style="outline:1px solid rgba(255,255,255,.4);outline-offset:2px"' : '';
+      return `
+        <div class="row" data-id="${d.id}"${blink}>
+          <div class="id">${d.id}</div>
+          <div class="mode">${d.mode}</div>
+          <div class="bat"><div class="f" style="right:${100-width}%"></div></div>
+          <div class="alt">${d.alt.toFixed(0)}m</div>
+          <div class="pct">${pct}%</div>
+        </div>`;
+    }).join('');
+  }
+
+  /* ===== Simulation loop ===== */
+  function init(){
+    app.drones = Array.from({length:CFG.COUNT}, (_,i)=>createDrone(i));
+    app.time = 0; app.run = false; app.inc = 0; app.pendingIncidentAt = null;
+    app.assistResolver = null; app.incidentId = null; app.helpers = [];
+    feed.length = 0; renderFeed();
+    updateHUD();
+    renderFleet();
+    resize();
+    render();
+    el.status.textContent = 'Grounded';
+    el.status.className = 'status neutral';
+  }
+
   function resize(){
-    view.dpr=Math.min(2,window.devicePixelRatio||1);
-    const r=el.map.getBoundingClientRect();
-    view.w=Math.floor(r.width); view.h=Math.floor(r.height);
-    el.map.width=view.w*view.dpr; el.map.height=view.h*view.dpr;
+    const rect = el.map.getBoundingClientRect();
+    view.dpr = window.devicePixelRatio || 1;
+    view.w = Math.round(rect.width * view.dpr);
+    view.h = Math.round(rect.width * (10/16) * view.dpr);
+    el.map.width = view.w;
+    el.map.height = view.h;
+    el.map.style.height = rect.width * (10/16) + 'px';
     ctx.setTransform(view.dpr,0,0,view.dpr,0,0);
     render();
   }
-  function init(){
-    el.status.textContent='Grounded'; el.status.className='status neutral';
-    app.drones = Array.from({length:CFG.COUNT},(_,i)=>createDrone(i));
-    resize(); updateUI(); bind(); requestAnimationFrame(loop);
+
+  function step(now){
+    if(!app.last) app.last = now;
+    const dt = Math.min(0.12, (now - app.last) / 1000);
+    app.last = now;
+
+    if(app.run){
+      app.time += dt;
+      updateFleet(dt);
+      updateHUD();
+      maybeTriggerIncident();
+      resolveAssist(dt);
+      tickBlink(dt);
+      render();
+    }
+
+    requestAnimationFrame(step);
   }
+
+  function tickBlink(dt){
+    app.drones.forEach(d=>{
+      if(d.blink>0){
+        d.blink = Math.max(0, d.blink - dt);
+      }
+    });
+  }
+
+  /* ===== Incidents ===== */
+  function maybeTriggerIncident(){
+    if(app.scenario!=='incident') return;
+    if(app.pendingIncidentAt===null){
+      app.pendingIncidentAt = app.time + 12 + Math.random()*8;
+      return;
+    }
+    if(app.time >= app.pendingIncidentAt){
+      const candidates = app.drones.filter(d=>d.mode==='PATROL');
+      if(!candidates.length){
+        app.pendingIncidentAt = app.time + 8;
+        return;
+      }
+      const target = candidates[Math.floor(Math.random()*candidates.length)];
+      target.mode = 'DISTRESS';
+      app.incidentId = target.id;
+      target.alt = 0;
+      logAlert('bad', `DISTRESS • ${target.id} stalled, requesting assist`);
+      requestAssist(target);
+      app.pendingIncidentAt = app.time + 20 + Math.random()*10;
+      app.inc++;
+    }
+  }
+
+  function requestAssist(target){
+    const helpers = app.drones.filter(d=>d.mode==='PATROL' && d.id!==target.id)
+      .sort((a,b)=>Math.hypot(a.x-target.x,a.y-target.y) - Math.hypot(b.x-target.x,b.y-target.y))
+      .slice(0,2);
+    helpers.forEach((d,i)=>{
+      d.mode='ASSIST'; d.assistTargetId=target.id; d.assistRadius = 12 + i*4;
+      d.blink = 2.5;
+    });
+    app.helpers = helpers.map(d=>d.id);
+  }
+
+  function resolveAssist(dt){
+    if(!app.incidentId) return;
+    const target = app.drones.find(d=>d.id===app.incidentId);
+    if(!target){ app.incidentId=null; return; }
+
+    if(target.mode==='DISTRESS'){
+      target.distressTime = (target.distressTime||0) + dt;
+      if(target.distressTime > 9){
+        target.mode='PATROL';
+        target.distressTime=0;
+        logAlert('ok', `RESOLVED • ${target.id} restored to patrol`);
+        app.incidentId = null;
+        app.helpers.forEach(id=>{
+          const h=app.drones.find(d=>d.id===id);
+          if(h) h.mode='PATROL';
+        });
+        app.helpers.length=0;
+      }
+    }else{
+      app.incidentId = null;
+      app.helpers.forEach(id=>{
+        const h=app.drones.find(d=>d.id===id);
+        if(h) h.mode='PATROL';
+      });
+      app.helpers.length=0;
+    }
+  }
+
+  /* ===== Commands ===== */
+  function handleCommand(cmd){
+    const [verb,...rest] = cmd.trim().toLowerCase().split(/\s+/);
+    if(!verb) return;
+    if(verb==='launch') return doLaunch();
+    if(verb==='rtb') return doRTB();
+    if(verb==='reset') return doReset();
+    if(verb==='assist'){
+      const id = rest[0];
+      if(!id) return logAlert('bad', 'Invalid assist command (requires drone id)');
+      const target=app.drones.find(d=>d.id.toLowerCase()===id.toLowerCase());
+      if(!target) return logAlert('bad', `Drone ${id} not found`);
+      target.mode='DISTRESS';
+      app.incidentId = target.id;
+      requestAssist(target);
+      logAlert('assist', `Operator flagged ${target.id} for assist`);
+      return;
+    }
+    logAlert('bad', `Unknown command: ${verb}`);
+  }
+
+  function doLaunch(){
+    if(app.run){ logAlert('bad', 'Fleet already active'); return; }
+    app.run = true;
+    app.last = performance.now();
+    startCleanSweep();
+    el.status.textContent = 'Active';
+    el.status.className = 'status ok';
+    logAlert('ok', 'Fleet launch acknowledged');
+  }
+
+  function doRTB(){
+    app.drones.forEach(d=>{
+      if(d.mode!=='GROUND') d.mode='RTB';
+    });
+    logAlert('assist', 'Commanded RTB for entire fleet');
+  }
+
+  function doReset(){
+    init();
+    logAlert('ok', 'Panel reset to standby');
+  }
+
+  /* ===== Events ===== */
+  el.launch.addEventListener('click', () => doLaunch());
+  el.rtb.addEventListener('click', () => doRTB());
+  el.resetButton.addEventListener('click', () => doReset());
+  el.exportBtn.addEventListener('click', () => {
+    const blob = new Blob([feed.map(item=>`${item.stamp},${item.kind},${item.msg}`).join('\n')], {type:'text/csv'});
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'black-hive-alerts.csv';
+    a.click();
+    URL.revokeObjectURL(url);
+  });
+
+  el.cmdSend.addEventListener('click', () => {
+    handleCommand(el.cmdIn.value);
+    el.cmdIn.value='';
+  });
+  el.cmdIn.addEventListener('keydown', (e) => {
+    if(e.key==='Enter'){
+      handleCommand(el.cmdIn.value);
+      el.cmdIn.value='';
+    }
+  });
+
+  document.addEventListener('keydown', (e) => {
+    if(e.key==='/'){
+      e.preventDefault();
+      el.cmdIn.focus();
+    }
+    if(e.key==='l' || e.key==='L') doLaunch();
+    if(e.key==='r' || e.key==='R') doRTB();
+    if(e.key==='x' || e.key==='X') doReset();
+  });
+
+  el.scenario.addEventListener('change', () => {
+    app.scenario = el.scenario.value;
+    if(app.scenario!=='incident'){
+      app.pendingIncidentAt = null;
+      app.incidentId = null;
+      app.helpers.length=0;
+    }
+    logAlert('ok', `Scenario set to ${el.scenario.value}`);
+  });
+
+  el.list.addEventListener('click', (e) => {
+    const target = e.target.closest('.row');
+    if(!target) return;
+    const id = target.getAttribute('data-id');
+    const drone = app.drones.find(d=>d.id===id);
+    if(!drone) return;
+    app.highlight = drone.id;
+    drone.blink = 2;
+    logAlert('assist', `Operator highlighted ${drone.id}`);
+  });
+
+  window.addEventListener('resize', resize);
+
   init();
+  requestAnimationFrame(step);
 });
 </script>
-<script>
-  (function(){
-    function setVH(){
-      const h = window.innerHeight * 0.01;
-      document.documentElement.style.setProperty('--vh', h + 'px');
-    }
-    setVH();
-    window.addEventListener('resize', setVH);
-    window.addEventListener('orientationchange', setVH);
-  })();
-</script>
-</body>
-</html>
