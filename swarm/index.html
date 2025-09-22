@@ -4,6 +4,8 @@
 <meta charset="utf-8"/>
 <meta name="viewport" content="width=device-width,initial-scale=1"/>
 <title>SWARM PANEL</title>
+<link rel="icon" href="../assets/favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="../style.css" />
 <style>
   :root{
     /* Brand */
@@ -19,7 +21,8 @@
     --chip:#0f151c; --chip2:#0c1116;
   }
   *{box-sizing:border-box}
-  html,body{margin:0;background:var(--bg);color:var(--ink);font:13.5px/1.5 Inter,system-ui,Segoe UI,Roboto,Arial,sans-serif}
+  html,body.swarm-sim{margin:0;background:var(--bg);color:var(--ink);font:13.5px/1.5 Inter,system-ui,Segoe UI,Roboto,Arial,sans-serif}
+  body.swarm-sim{display:block;min-height:100vh}
 
   /* ===== App chrome ===== */
   .wrap{display:grid;grid-template-columns:2fr 1.25fr;gap:16px;max-width:1200px;margin:18px auto;padding:0 12px}
@@ -120,23 +123,29 @@
   }
 </style>
 </head>
-<body>
-  <header class="site-bar">
-    <details class="brand-menu" role="navigation">
-      <summary class="brand-pill" aria-label="Open site menu">
-        <img src="../assets/IMG_1753.png" alt="BLACK-HIVE" class="brand-logo">
-        <span class="brand-text">Swarm Panel</span>
-        <span class="caret">▾</span>
-      </summary>
-      <nav class="brand-dropdown" aria-label="Main">
-        <a href="../overview.html">Overview</a>
-        <a href="./index.html">Swarm Panel</a>
-        <a href="../research.html">Research</a>
-        <a href="../contact.html">Contact</a>
-        <a href="javascript:history.back()">Back</a>
-      </nav>
-    </details>
-  </header>
+<body class="swarm-sim">
+  <main role="main">
+    <section class="hero hero--framed hero--plain hero--panel-sim">
+      <div class="hero__bg" aria-hidden="true"></div>
+      <header class="site-bar">
+        <details class="brand-menu" role="navigation">
+          <summary class="brand-pill" aria-label="Open site menu">
+            <img src="../assets/IMG_1753.png" alt="BLACK-HIVE" class="brand-logo">
+            <span class="brand-text">Swarm Panel</span>
+            <span class="caret">▾</span>
+          </summary>
+          <nav class="brand-dropdown" aria-label="Main">
+            <a href="../overview.html">Overview</a>
+            <a href="./index.html">Swarm Panel Sim</a>
+            <a href="../research.html">Research</a>
+            <a href="../contact.html">Contact</a>
+            <a href="javascript:history.back()">Back</a>
+          </nav>
+        </details>
+      </header>
+      <div class="hero__subbadge"><p class="title">SWARM PANEL</p></div>
+    </section>
+  </main>
   <script>
     (function(){
       const menu = document.querySelector('.brand-menu');
@@ -155,7 +164,8 @@
     })();
   </script>
 
-  <div class="wrap">
+  <main class="sim-app">
+    <div class="wrap">
     <!-- LEFT -->
     <div class="card">
       <div class="hd">
@@ -214,7 +224,8 @@
         <div class="feed" id="feedContainer" role="log" aria-live="polite"></div>
       </div>
     </div>
-  </div>
+    </div>
+  </main>
 
 <script>
 document.addEventListener('DOMContentLoaded', () => {
@@ -624,6 +635,17 @@ document.addEventListener('DOMContentLoaded', () => {
   }
   init();
 });
+</script>
+<script>
+  (function(){
+    function setVH(){
+      const h = window.innerHeight * 0.01;
+      document.documentElement.style.setProperty('--vh', h + 'px');
+    }
+    setVH();
+    window.addEventListener('resize', setVH);
+    window.addEventListener('orientationchange', setVH);
+  })();
 </script>
 </body>
 </html>
