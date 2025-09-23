@@ -9,28 +9,37 @@
     {% if page.head_extra %}{{ page.head_extra | safe }}{% endif %}
   </head>
   <body class="{% if page.body_class %}{{ page.body_class }}{% endif %}{% if page.hero %} has-hero{% endif %}">
-    <header class="site-header" role="banner">
-      <div class="site-header__inner">
-        <details class="brand-menu" role="navigation">
-          <summary class="brand-pill" aria-label="Open site menu">
-            <img src="{{ '/assets/IMG_1753.png' | relative_url }}" alt="{{ site.title }}" class="brand-logo" />
-            <span class="brand-text">{{ page.nav_label | default: page.title | default: site.title }}</span>
-            <span class="caret">▾</span>
-          </summary>
-          <nav class="brand-dropdown" aria-label="Main">
-            <a href="{{ '/overview.html' | relative_url }}">Overview</a>
-            <a href="{{ '/swarm/' | relative_url }}">Swarm Panel Sim</a>
-            <a href="{{ '/research.html' | relative_url }}">Research</a>
-            <a href="{{ '/contact.html' | relative_url }}">Contact</a>
-            <a href="javascript:history.back()">Back</a>
-          </nav>
-        </details>
-      </div>
-    </header>
+    {% capture brand_menu %}
+      <details class="brand-menu" role="navigation">
+        <summary class="brand-pill" aria-label="Open site menu">
+          <img src="{{ '/assets/IMG_1753.png' | relative_url }}" alt="{{ site.title }}" class="brand-logo" />
+          <span class="brand-text">{{ page.nav_label | default: page.title | default: site.title }}</span>
+          <span class="caret">▾</span>
+        </summary>
+        <nav class="brand-dropdown" aria-label="Main">
+          <a href="{{ '/overview.html' | relative_url }}">Overview</a>
+          <a href="{{ '/swarm/' | relative_url }}">Swarm Panel Sim</a>
+          <a href="{{ '/research.html' | relative_url }}">Research</a>
+          <a href="{{ '/contact.html' | relative_url }}">Contact</a>
+          <a href="javascript:history.back()">Back</a>
+        </nav>
+      </details>
+    {% endcapture %}
+
+    {% unless page.hero %}
+      <header class="site-header" role="banner">
+        <div class="site-header__inner">
+          {{ brand_menu | strip }}
+        </div>
+      </header>
+    {% endunless %}
 
     <main id="main-content" class="site-main" role="main">
       {% if page.hero %}
         <section class="hero hero--framed" aria-labelledby="hero-title">
+          <div class="hero__menu">
+            {{ brand_menu | strip }}
+          </div>
           <div class="hero__bg" aria-hidden="true"></div>
           <div class="hero__banner" role="region" aria-labelledby="hero-title">
             <div class="banner__row">
