@@ -9,18 +9,35 @@
     {% if page.head_extra %}{{ page.head_extra | safe }}{% endif %}
   </head>
   <body class="{% if page.body_class %}{{ page.body_class }}{% endif %}{% if page.hero %} has-hero{% endif %}">
+    {% assign nav_active = '' %}
+    {% assign current_url = page.url | default: '' %}
+    {% if current_url == '/' or current_url == '/index.html' %}
+      {% assign nav_active = 'overview' %}
+    {% elsif current_url == '/overview.html' %}
+      {% assign nav_active = 'overview' %}
+    {% elsif current_url == '/panel.html' %}
+      {% assign nav_active = 'swarm' %}
+    {% elsif current_url == '/swarm/' or current_url == '/swarm/index.html' %}
+      {% assign nav_active = 'swarm' %}
+    {% elsif current_url == '/research.html' %}
+      {% assign nav_active = 'research' %}
+    {% elsif current_url == '/contact.html' %}
+      {% assign nav_active = 'contact' %}
+    {% endif %}
+
     {% capture brand_menu %}
       <details class="brand-menu" role="navigation">
         <summary class="brand-pill" aria-label="Open site menu">
           <img src="{{ '/assets/IMG_1753.png' | relative_url }}" alt="{{ site.title }}" class="brand-logo" />
-          <span class="brand-text">{{ page.nav_label | default: page.title | default: site.title }}</span>
+          <span class="brand-text">{{ site.title }}</span>
           <span class="caret">▾</span>
         </summary>
         <nav class="brand-dropdown" aria-label="Main">
-          <a href="{{ '/overview.html' | relative_url }}">Overview</a>
-          <a href="{{ '/swarm/' | relative_url }}">Swarm Panel Sim</a>
-          <a href="{{ '/research.html' | relative_url }}">Research</a>
-          <a href="{{ '/contact.html' | relative_url }}">Contact</a>
+          <a href="{{ '/index.html' | relative_url }}"{% if nav_active == 'home' %} class="active"{% endif %}>Home</a>
+          <a href="{{ '/index.html#overview' | relative_url }}"{% if nav_active == 'overview' %} class="active"{% endif %}>Overview</a>
+          <a href="{{ '/index.html#swarm' | relative_url }}"{% if nav_active == 'swarm' %} class="active"{% endif %}>Swarm Panel</a>
+          <a href="{{ '/index.html#research' | relative_url }}"{% if nav_active == 'research' %} class="active"{% endif %}>Research</a>
+          <a href="{{ '/index.html#contact' | relative_url }}"{% if nav_active == 'contact' %} class="active"{% endif %}>Contact</a>
           <a href="javascript:history.back()">Back</a>
         </nav>
       </details>
