@@ -346,3 +346,39 @@ body.home .hero__bg {
     transition: none !important;
   }
 }
+/* === UNIVERSAL TOP SPACING FIX === */
+
+/* Remove any default page spacing */
+html, body {
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+/* Logo pill container — small top margin only */
+.site-bar {
+  margin: 6px auto 0 !important;   /* bring header closer to top */
+  padding: 0 10px !important;
+  justify-content: flex-start !important;  /* keep left-aligned; change to center if desired */
+}
+
+/* Kill hidden padding/margins on the first section/wrapper */
+main, .page, .wrap, .container, .content, .section:first-child {
+  margin-top: 0 !important;
+  padding-top: 0 !important;
+}
+
+/* Ensure the hero block sits just under the pill with a tiny frame */
+.hero, .masthead, .card-hero, .section-hero {
+  margin-top: 8px !important;
+}
+
+/* Prevent image-based heroes from adding extra gap */
+.hero img, .masthead img, .card-hero img, .section-hero img {
+  display: block;
+}
+
+/* Desktop should behave the same as mobile */
+@media (min-width: 768px) {
+  .site-bar { margin-top: 6px !important; }
+  .hero, .masthead, .card-hero, .section-hero { margin-top: 8px !important; }
+}
