@@ -15,7 +15,7 @@
       {% assign nav_active = 'overview' %}
     {% elsif current_url == '/overview.html' %}
       {% assign nav_active = 'overview' %}
-    {% elsif current_url == '/panel.html' %}
+    {% elsif current_url == '/swarm-panel.html' or current_url == '/panel.html' %}
       {% assign nav_active = 'swarm' %}
     {% elsif current_url == '/swarm/' or current_url == '/swarm/index.html' %}
       {% assign nav_active = 'swarm' %}
@@ -35,9 +35,9 @@
         <nav class="brand-dropdown" aria-label="Main">
           <a href="{{ '/index.html' | relative_url }}"{% if nav_active == 'home' %} class="active"{% endif %}>Home</a>
           <a href="{{ '/index.html#overview' | relative_url }}"{% if nav_active == 'overview' %} class="active"{% endif %}>Overview</a>
-          <a href="{{ '/index.html#swarm' | relative_url }}"{% if nav_active == 'swarm' %} class="active"{% endif %}>Swarm Panel</a>
-          <a href="{{ '/index.html#research' | relative_url }}"{% if nav_active == 'research' %} class="active"{% endif %}>Research</a>
-          <a href="{{ '/index.html#contact' | relative_url }}"{% if nav_active == 'contact' %} class="active"{% endif %}>Contact</a>
+          <a href="{{ '/swarm-panel.html' | relative_url }}"{% if nav_active == 'swarm' %} class="active"{% endif %}>Swarm Panel</a>
+          <a href="{{ '/research.html' | relative_url }}"{% if nav_active == 'research' %} class="active"{% endif %}>Research</a>
+          <a href="{{ '/contact.html' | relative_url }}"{% if nav_active == 'contact' %} class="active"{% endif %}>Contact</a>
           <a href="javascript:history.back()">Back</a>
         </nav>
       </details>
