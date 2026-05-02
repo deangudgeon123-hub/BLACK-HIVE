@@ -1,7 +1,9 @@
 title: STONE & ANVIL
 description: Recycled Silver • Handcrafted Jewellery
 url: ""
-baseurl: ""
+# GitHub Pages project sites are served from /<repo-name>/.
+# Keeping baseurl explicit prevents broken asset/link paths when no custom domain is used.
+baseurl: "/BLACK-HIVE"
 collections:
   products:
     output: true
