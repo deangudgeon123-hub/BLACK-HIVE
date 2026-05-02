@@ -1,7 +1,31 @@
 ---
 layout: default
-title: BLACK-HIVE | Tactical Swarm Systems
-nav_label: BLACK-HIVE
-body_class: home
-hero: true
+title: Home
 ---
+<section class="hero container">
+  <p class="eyebrow">STONE & ANVIL</p>
+  <h1>Handcrafted jewellery made slowly and thoughtfully from recycled silver.</h1>
+  <p class="lead">Small-batch pieces shaped by hand, designed to be worn every day and kept for years.</p>
+  <div class="button-row">
+    <a class="button" href="{{ '/collections/' | relative_url }}">Shop Jewellery</a>
+    <a class="button button--ghost" href="{{ '/collections/' | relative_url }}">View Collections</a>
+  </div>
+</section>
+
+<section class="container section">
+  <h2>Featured pieces</h2>
+  <div class="product-grid">
+    {% for product in site.data.products limit:3 %}
+      {% include product-card.html product=product %}
+    {% endfor %}
+  </div>
+</section>
+
+<section class="container section values">
+  <h2>Brand values</h2>
+  <div class="values-grid">
+    <article><h3>Recycled silver</h3><p>Each piece is crafted with recycled silver to honour materials and reduce waste.</p></article>
+    <article><h3>Handmade</h3><p>Every design is forged, finished, and refined by hand in small batches.</p></article>
+    <article><h3>Meaningful pieces</h3><p>Quiet forms and lasting quality made with care, intention, and respect for the materials.</p></article>
+  </div>
+</section>

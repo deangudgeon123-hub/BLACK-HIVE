@@ -1,0 +1,33 @@
+- slug: river-band-ring
+  name: River Band Ring
+  price: 96
+  category: Rings
+  short_description: A softly hammered recycled silver band with a natural river-like texture.
+  description: Hand-forged in small batches, this everyday ring is shaped, textured, and finished by hand. Each piece carries slight variations that make it uniquely yours.
+  materials: Recycled sterling silver (925)
+  image: https://placehold.co/900x1100/F3EEE9/8B8A88?text=River+Band+Ring
+  gallery:
+    - https://placehold.co/900x1100/F3EEE9/8B8A88?text=River+Band+Ring
+    - https://placehold.co/900x1100/EFE6DF/8B8A88?text=Detail+Texture
+- slug: still-hoop-earrings
+  name: Still Hoop Earrings
+  price: 84
+  category: Earrings
+  short_description: Lightweight hand-formed hoops designed for everyday wear.
+  description: Minimal and quietly expressive, these hoops are formed in recycled silver and polished for a soft lustre.
+  materials: Recycled sterling silver (925)
+  image: https://placehold.co/900x1100/EEE8E2/8B8A88?text=Still+Hoop+Earrings
+  gallery:
+    - https://placehold.co/900x1100/EEE8E2/8B8A88?text=Still+Hoop+Earrings
+    - https://placehold.co/900x1100/F4EEE7/8B8A88?text=Handmade+Form
+- slug: ember-disc-pendant
+  name: Ember Disc Pendant
+  price: 112
+  category: Necklaces
+  short_description: A hand-stamped pendant with subtle organic markings.
+  description: Inspired by old metalwork techniques, this pendant is gently textured and suspended on a fine chain.
+  materials: Recycled sterling silver (925), silver chain
+  image: https://placehold.co/900x1100/F1EAE4/8B8A88?text=Ember+Disc+Pendant
+  gallery:
+    - https://placehold.co/900x1100/F1EAE4/8B8A88?text=Ember+Disc+Pendant
+    - https://placehold.co/900x1100/EEE7E1/8B8A88?text=Back+View

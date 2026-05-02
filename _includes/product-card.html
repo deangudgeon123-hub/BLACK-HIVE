@@ -1,0 +1,12 @@
+<article class="product-card">
+  <img src="{{ include.product.image }}" alt="{{ include.product.name }}" loading="lazy" />
+  <div class="product-card__content">
+    <p class="product-card__category">{{ include.product.category }}</p>
+    <h3>{{ include.product.name }}</h3>
+    <p>{{ include.product.short_description }}</p>
+    <div class="product-card__meta">
+      <span>£{{ include.product.price }}</span>
+      <a class="button button--ghost" href="{{ '/shop/' | append: include.product.slug | append: '/' | relative_url }}">View piece</a>
+    </div>
+  </div>
+</article>

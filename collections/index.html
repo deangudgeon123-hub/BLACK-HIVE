@@ -1,0 +1,17 @@
+---
+layout: default
+title: Shop
+---
+<section class="container section">
+  <h1>Shop / Collections</h1>
+  <p class="lead">Explore our small-batch handcrafted jewellery in recycled silver.</p>
+  <div class="filters">
+    <strong>Categories:</strong>
+    <span>Rings</span><span>Earrings</span><span>Necklaces</span>
+  </div>
+  <div class="product-grid">
+    {% for product in site.data.products %}
+      {% include product-card.html product=product %}
+    {% endfor %}
+  </div>
+</section>
