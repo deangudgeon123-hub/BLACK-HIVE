@@ -1,1 +1,13 @@
-title: BLACK-HIVE
+title: STONE & ANVIL
+description: Recycled Silver • Handcrafted Jewellery
+url: ""
+baseurl: ""
+collections:
+  products:
+    output: true
+    permalink: /shop/:name/
+defaults:
+  - scope:
+      path: ""
+    values:
+      layout: default
